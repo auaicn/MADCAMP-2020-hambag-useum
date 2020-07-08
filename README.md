@@ -1,9 +1,7 @@
 1. 공통과제 I (7/8 ~ 7/15)** **- 탭 구조를 활용한 안드로이드 앱 제작
 
 - 세 개의 탭이 존재함
-- 첫 번째 탭: 나의 연락처 구축. 휴대폰의 연락처 데이터를 읽어 오거나 JSON 형식을 이용해서 임의의 연락처 데이터를 구축.
-  - [ListView](https://developer.android.com/reference/android/widget/ListView.html)나 
-  - [RecyclerView](https://developer.android.com/guide/topics/ui/layout/recyclerview) 등을 이용해서 데이터 보여 주기
+- 첫 번째 탭: 나의 연락처 구축. 휴대폰의 연락처 데이터를 읽어 오거나 JSON 형식을 이용해서 임의의 연락처 데이터를 구축. [ListView](https://developer.android.com/reference/android/widget/ListView.html)나 [RecyclerView](https://developer.android.com/guide/topics/ui/layout/recyclerview) 등을 이용해서 데이터 보여 주기
 - 두 번째 탭: 나만의 이미지 갤러리 구축. 이미지는 대략 20개 정도
 - 세 번째 탭: 자유 주제
 
