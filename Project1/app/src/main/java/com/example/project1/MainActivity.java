@@ -41,7 +41,6 @@ public class MainActivity extends AppCompatActivity {
         phoneFragment = new phoneFragment();
         photoFragment = new photoFragment();
         noneFragment = new noneFragment();
-
         tabLayout.setupWithViewPager(viewPager);
 
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), 0);
