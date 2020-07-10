@@ -78,8 +78,8 @@ public class phoneFragment extends Fragment {
         System.out.println("--------------------------------before----------------------------------------------------------------------------");
 
         for (int i=0;i<loaded_items.size();i++){
-            adapter.addItem(new SingleItem(loaded_items.get(i).getName(),loaded_items.get(i).getMobile(),loaded_items.get(i).getAge(),loaded_items.get(i).getResId()));
-            //adapter.addItem(new SingleItem(loaded_items.get(i).getName(),loaded_items.get(i).getMobile(),loaded_items.get(i).getAge()));
+            //adapter.addItem(new SingleItem(loaded_items.get(i).getName(),loaded_items.get(i).getMobile(),loaded_items.get(i).getAge(),loaded_items.get(i).getResId()));
+            adapter.addItem(new SingleItem(loaded_items.get(i).getName(),loaded_items.get(i).getMobile(),loaded_items.get(i).getAge()));
         }
         System.out.println("-------------------------------after-----------------------------------------------------------------------------");
         System.out.println("auaicn" + loaded_items.size());

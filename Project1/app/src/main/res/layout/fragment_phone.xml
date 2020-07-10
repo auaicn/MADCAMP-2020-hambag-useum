@@ -5,14 +5,9 @@
     android:layout_height="match_parent"
     tools:context=".phoneFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="phone fragment?" />
-
     <ListView
+        android:id="@+id/contact_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"/>
 
 </FrameLayout>
