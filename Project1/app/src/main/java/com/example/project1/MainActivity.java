@@ -9,6 +9,8 @@ import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -16,11 +18,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -35,6 +39,8 @@ import java.util.List;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
+
+    ConstraintLayout constraintLayout;
 
     private Toolbar toolbar;
     private ViewPager viewPager;
@@ -66,6 +72,17 @@ public class MainActivity extends AppCompatActivity {
         viewPagerAdapter.addFragment(todoFragment, "To-Do");
         viewPager.setAdapter(viewPagerAdapter);
 
+        todoFragment.todoDB = init_database("todoList.db");
+        init_tables(todoFragment.todoDB, "CONTACT");
+
+        constraintLayout = findViewById(R.id.constraintLayout);
+        constraintLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                int screenHeight = constraintLayout.getRootView().getMeasuredHeight();
+                Log.d("hamApp", Integer.toString(screenHeight));
+            }
+        });
     }
 
     private class ViewPagerAdapter extends FragmentPagerAdapter {
@@ -98,5 +115,34 @@ public class MainActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position){
             return fragmentTitle.get(position);
         }
+    }
+
+    public SQLiteDatabase init_database(String databaseFileName) {
+        SQLiteDatabase db = null;
+        File file = new File(getFilesDir(), databaseFileName);
+
+        Log.d("hamApp", "PATH: " + file.toString());
+        //System.out.println("PATH: " + file.toString());
+
+        try {
+            db = SQLiteDatabase.openOrCreateDatabase(file, null);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        if (db == null) { System.out.println("DB creation failed. " + file.getAbsolutePath()); }
+
+        return db;
+    }
+
+    private void init_tables(SQLiteDatabase sqliteDB, String tableName) {
+        if(sqliteDB == null) return;
+
+        String sqlCreateTbl = "CREATE TABLE IF NOT EXISTS "+ tableName + " (" +
+                "TITLE "       + "TEXT NOT NULL," +
+                "DATE "     + "TEXT," +
+                "DONE "   + "INTEGER" + ")";
+        System.out.println(sqlCreateTbl);
+        sqliteDB.execSQL(sqlCreateTbl);
     }
 }

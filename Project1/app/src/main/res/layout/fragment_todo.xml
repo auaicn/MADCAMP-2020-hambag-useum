@@ -1,14 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".todoFragment">
+<androidx.constraintlayout.widget.ConstraintLayout
+	android:id="@+id/constraintLayout"
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
 
-        <ListView
-            android:id="@+id/todoView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+	<ListView
+		android:id="@+id/todoView"
+		android:layout_width="match_parent"
+		android:layout_height="0dp"
+		app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+		app:layout_constraintTop_toTopOf="parent" />
 
-</FrameLayout>
+	<LinearLayout
+		android:id="@+id/linearLayout"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal"
+		app:layout_constraintBottom_toBottomOf="parent"
+		android:padding="10dp"
+		android:background="#DDFFFFFF">
+
+		<EditText
+			android:id="@+id/editTextTitle"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:hint="to do"
+			android:maxLines="1"/>
+
+		<EditText
+			android:id="@+id/editTextDate"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:hint="2020/04/01"
+			android:maxLines="1"/>
+
+		<ImageButton
+			android:id="@+id/addButton"
+			android:layout_width="wrap_content"
+			android:layout_height="match_parent"
+			android:src="@drawable/ic_baseline_add_circle_outline_24"
+			android:background="#00FFFFFF"
+			android:paddingLeft="10dp" />
+
+	</LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

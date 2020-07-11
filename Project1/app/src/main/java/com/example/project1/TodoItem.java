@@ -4,7 +4,7 @@ public class TodoItem {
     // int index;
     String _title;
     String _date;
-    Boolean _check;
+    Boolean _done;
 
     public String getTitle() {
         return _title;
@@ -15,16 +15,16 @@ public class TodoItem {
     }
 
     public Boolean isCheck() {
-        return _check;
+        return _done;
     }
 
     public void changeCheck() {
-        _check = !_check;
+        _done = !_done;
     }
 
     public TodoItem(String title, String date, Boolean check) {
         _title = title;
         _date = date;
-        _check = check;
+        _done = check;
     }
 }

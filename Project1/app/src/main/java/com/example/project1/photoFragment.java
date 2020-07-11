@@ -54,7 +54,7 @@ public class photoFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        Log.d("hamApp", "apapapapapapapapapa");
+        Log.d("hamApp", "onCreateView_photo");
 
         final ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_photo, container, false);
 
@@ -127,7 +127,7 @@ public class photoFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        Log.d("hamApp", "onResume");
+        Log.d("hamApp", "onResume_photo");
         // 기기의 SDK version 체크 (Build.VERSION_CODES.M : Marshmallow)
         // [1] permission이 거부(denied)되어 있는 경우
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && arePermissionsDenied()){
