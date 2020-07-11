@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
     private phoneFragment phoneFragment;
     private photoFragment photoFragment;
-    private noneFragment noneFragment;
+    private todoFragment todoFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,15 +55,15 @@ public class MainActivity extends AppCompatActivity {
         viewPager = findViewById(R.id.view_pager);
         tabLayout = findViewById(R.id.tab_layout);
 
-        phoneFragment = new phoneFragment();
         photoFragment = new photoFragment();
-        noneFragment = new noneFragment();
+        phoneFragment = new phoneFragment();
+        todoFragment = new todoFragment();
         tabLayout.setupWithViewPager(viewPager);
 
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), 0);
         viewPagerAdapter.addFragment(phoneFragment, "Phone");
         viewPagerAdapter.addFragment(photoFragment, "Photo");
-        viewPagerAdapter.addFragment(noneFragment, "None");
+        viewPagerAdapter.addFragment(todoFragment, "To-Do");
         viewPager.setAdapter(viewPagerAdapter);
 
     }

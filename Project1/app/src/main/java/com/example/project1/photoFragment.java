@@ -54,6 +54,8 @@ public class photoFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        Log.d("hamApp", "apapapapapapapapapa");
+
         final ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_photo, container, false);
 
         gridView = (GridView) rootView.findViewById(R.id.gridView);
@@ -64,13 +66,7 @@ public class photoFragment extends Fragment {
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                //int resId = (int) adapter.getItem(i);
-                Log.d("hamApp", "onItemClick");
-                Log.d("hamApp", String.valueOf(i));
-                Log.d("hamApp", (String) gridView.getAdapter().getItem(i));
-
-                //PhotoView selectView = new PhotoView(getActivity().getApplicationContext());
-                //selectView.setIm
+                Log.d("hamApp", "onItemClick1");
                 Glide.with(getActivity()).load(gridView.getAdapter().getItem(i)).into(selectedView);
 
                 fullPhoto.setVisibility(View.VISIBLE);
@@ -91,11 +87,13 @@ public class photoFragment extends Fragment {
 
     private static final String[] PERMISSIONS = {
             Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.READ_CONTACTS,
+            Manifest.permission.WRITE_CONTACTS
     };
 
     private boolean arePermissionsDenied() {
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 4; i++) {
             // 두 요청사항 중 하나라도 허용하지 않은 상태일 경우
             if (ContextCompat.checkSelfPermission(getContext(), PERMISSIONS[i]) != PackageManager.PERMISSION_GRANTED)
                 return true; }
