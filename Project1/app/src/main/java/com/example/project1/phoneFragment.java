@@ -1,6 +1,8 @@
 package com.example.project1;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,91 +18,83 @@ import java.util.List;
 
 public class phoneFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
     private ListView listView;
     private phoneFragment.ContactAdapter adapter;
-
-    public phoneFragment() {
-        // Required empty public constructor
-    }
 
     public static phoneFragment newInstance(String param1, String param2) {
         phoneFragment fragment = new phoneFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
-
-    //private List<PhoneBook> phoneBooks;
     private List<SingleItem> loaded_items;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        // return inflater.inflate(R.layout.fragment_phone, container, false);
-        // fragment_phone의 ROOT VIEW type 은 FrameLayout 이던데, ViewGroup 이 관련있는 것 같다.
+        // View Group
         ViewGroup view = (ViewGroup) inflater.inflate(R.layout.fragment_phone, container, false);
+        listView = (ListView) view.findViewById(R.id.contact_list_view);
 
+        // Contact APP 에 접근해서, 연락처 정보를 쿼리를 통해 LIST 형태로 가져온다.
         loaded_items = SingleItem.getContacts(getActivity());
+        System.out.println(loaded_items.size() + " elements loaded by getContacts()"); // debugging.
 
-        listView = (ListView) view.findViewById(R.id.contact_view);
-
+        // Custom adapter Object 생성
         adapter = new ContactAdapter();
+        Bundle bundle;
 
-        //adapter.addItem(new PhoneBook("24","auaicn","010-8506-4538"));
-        //adapter.addItem(new SingleItem("auaicn","01085064538",24,R.drawable.animal1));
 
-        /*
-        for (int i=0;i<phoneBooks.size();i++){
-            adapter.addItem(new PhoneBook(phoneBooks.get(i).getId(),phoneBooks.get(i).getName(),phoneBooks.get(i).getTel()));
+        // Custom adapter Object 에 load한 연락처 아이템 하나하나를 추가해준다.
+        // addItem() on class "SingleItem" which is sub-class of current class.
+        for (int i=0;i<loaded_items.size();i++) {
+            System.out.println(loaded_items.get(i));
+            adapter.addItem(new SingleItem(
+                    loaded_items.get(i).getPHOTO_URI(),
+                    loaded_items.get(i).getDISPLAY_NAME(),
+                    loaded_items.get(i).getCOMPANY(),
+                    loaded_items.get(i).getNUMBER(),
+                    loaded_items.get(i).getADDRESS(),
+                    loaded_items.get(i).getURL(),
+                    loaded_items.get(i).getNOTE(),
+                    loaded_items.get(i).getIS_PRIMARY()));
         }
-        */
-        System.out.println("--------------------------------before----------------------------------------------------------------------------");
-
-        for (int i=0;i<loaded_items.size();i++){
-            //adapter.addItem(new SingleItem(loaded_items.get(i).getName(),loaded_items.get(i).getMobile(),loaded_items.get(i).getAge(),loaded_items.get(i).getResId()));
-            adapter.addItem(new SingleItem(loaded_items.get(i).getName(),loaded_items.get(i).getMobile(),loaded_items.get(i).getAge()));
-        }
-        System.out.println("-------------------------------after-----------------------------------------------------------------------------");
-        System.out.println("auaicn" + loaded_items.size());
-
+        // Object 의 추가가 완료되면, adapter 를 설정해준다.
         listView.setAdapter(adapter);
 
+        // listView 에는, 각 item 이 눌리는 것을 event 로 처리해줄 수 있는데,
+        // Toast 메시지를 출력할 수 있게 설정해준 상태이다.
+        // list 자체가 눌리는 이벤트를 처리해주는 함수는 setOnClickListener 이다.
+        // 우선순위는 list 자체가 눌리는 이벤트가 우선인 것 같다. 그래서 정의해주지 않았다.
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                SingleItem item = (SingleItem) adapter.getItem(position);
-                Toast.makeText(getActivity(),"선택 : " + item.getName(), Toast.LENGTH_LONG).show();
-            }
 
+                SingleItem item = (SingleItem) adapter.getItem(position);
+                // Toast.makeText(getActivity(),"선택 : " + item.getName(), Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(getActivity(), profile_description.class);
+                Log.d("auaicn","Starting activity succeed");
+                intent.putExtras(bundle);
+                if (intent.putExtra("profile_in_detail",bundle) == null)
+                    Log.d("auaicn","intent putting extra failed");
+                else
+                    Log.d("auaicn","intent putting extra succeed");
+                startActivity(intent);
+                Log.d("auaicn","Starting activity succeed");
+            }
         });
 
         return view;
     }
 
    public class ContactAdapter extends BaseAdapter{
-        ArrayList<SingleItem> items = new ArrayList<SingleItem>();
-       //ArrayList<PhoneBook> items = new ArrayList<PhoneBook>();
+        // mandatory override
+           // 1. getCount()
+           // 2. getItem()
+           // 3. getItemId()
+           // 4. getView()
 
         @Override
         public int getCount() {
@@ -112,33 +106,24 @@ public class phoneFragment extends Fragment {
             return items.get(position);
        }
 
-        /*
-        // not overriding here
-        public void addItem(PhoneBook item){
-            items.add(item);
-        }
-        */
-        public void addItem(SingleItem item){
-            items.add(item);
-        }
-
         @Override
         public long getItemId(int position) {
             return position;
         }
 
+        ArrayList<SingleItem> items = new ArrayList<SingleItem>();
+
+       public void addItem(SingleItem item){
+           items.add(item);
+       }
+
         @Override
         public View getView(int position, View convertView, ViewGroup viewGroup) {
             SingleItemView view = new SingleItemView(getActivity());
-            //PhoneBook item = items.get(position);
+
             SingleItem item = items.get(position);
-            view.setText1(item.getName());
-            view.setText2(item.getMobile());
-            view.setText3(item.getAge());
-            // view.setText2(item.getTel());
-            // view.setText3(Integer.parseInt(item.getId()));
-            // view.setImage(ge);
-            view.setImage(item.getResId());
+            view.setContact_name(item.getDISPLAY_NAME());
+
             return view;
         }
     }

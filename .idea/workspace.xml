@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="7a87e5c0-e182-4d7e-ad20-f9419915398f" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/common_assignment.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Project1/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Project1/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Project1/app/src/main/java/com/example/project1/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/Project1/app/src/main/java/com/example/project1/MainActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Project1/app/src/main/java/com/example/project1/phoneFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/Project1/app/src/main/java/com/example/project1/phoneFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Project1/app/src/main/java/com/example/project1/photoFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/Project1/app/src/main/java/com/example/project1/photoFragment.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IgnoredFileRootStore">
+    <option name="generatedRoots">
+      <set>
+        <option value="C:\Users\q\Desktop\workspace\common_assignment\.idea" />
+      </set>
+    </option>
+  </component>
+  <component name="ProjectId" id="1eUDgBfJuBvO6t9RtsQ4WUo3hLT" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/Project1" />
+    <property name="settings.editor.selected.configurable" value="AndroidSdkUpdater" />
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="7a87e5c0-e182-4d7e-ad20-f9419915398f" name="Default Changelist" comment="" />
+      <created>1594367386638</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1594367386638</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="740" y="275" key="FileChooserDialogImpl" timestamp="1594367433294">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="740" y="275" key="FileChooserDialogImpl/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1594367433294" />
+  </component>
+</project>
