@@ -4,7 +4,9 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:paddingTop="5dp"
-    android:id="@+id/contact_view">
+    android:id="@+id/contact_view"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
 
     <TextView android:id="@+id/contact_title"
         android:layout_width="match_parent"
@@ -40,11 +42,10 @@
         android:layout_toRightOf="@id/search_glass_img"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="search"
+        android:hint="search"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="20dp"
         android:paddingBottom="5dp"
-
         android:fontFamily="@font/calibri_bold" />
 
     <ListView android:id="@+id/contact_list_view"
