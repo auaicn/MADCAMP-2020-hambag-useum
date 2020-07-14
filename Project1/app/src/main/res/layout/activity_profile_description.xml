@@ -25,7 +25,6 @@
         android:fontFamily="@font/calibri_bold"
         android:textSize="20sp"
         android:layout_marginLeft="20dp"
-        android:textColor="@color/colorPrimary"
         android:layout_height="wrap_content"/>
 
     <Button android:id="@+id/button_change_to_edit_mode"
@@ -36,7 +35,6 @@
         android:background="@android:color/transparent"
         android:textSize="20sp"
         android:layout_marginRight="20dp"
-        android:textColor="@color/colorPrimary"
         android:layout_height="wrap_content"/>
 
     <TextView
