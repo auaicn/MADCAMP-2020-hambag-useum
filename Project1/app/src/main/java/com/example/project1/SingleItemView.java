@@ -66,8 +66,6 @@ public class SingleItemView extends RelativeLayout {
         // 넣는다면 넣어줄 수는 있슴.
         classifier  = (TextView) findViewById(R.id.contact_item_classifier);
         contact_name = (TextView) findViewById(R.id.contact_item_text);
-        contact_item_background = (TextView) findViewById(R.id.contact_item_background);
-
     }
 
 }

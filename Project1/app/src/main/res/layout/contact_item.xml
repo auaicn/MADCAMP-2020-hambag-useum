@@ -1,44 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/contact_item"
-    android:layout_height="match_parent"
-    android:layout_width="wrap_content"
-    android:layout_marginBottom="6dp"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical">
 
-    <TextView android:id="@+id/contact_item_background"
+    <TextView
+        android:id="@+id/contact_item_classifier"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text=""
-        android:textSize="14sp"
         android:background="@color/colorRed"
-        android:fontFamily="@font/calibri_bold"
-        xmlns:android="http://schemas.android.com/apk/res/android">
-    </TextView>
-
-    <TextView android:id="@+id/contact_item_classifier"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="FIRST CHARACTER"
-        android:layout_marginLeft="10dp"
-        android:textSize="14sp"
-        android:textColor="#FFFFFF"
         android:fontFamily="@font/binggrae2_bold"
-        xmlns:android="http://schemas.android.com/apk/res/android">
-    </TextView>
+        android:paddingLeft="20dp"
+        android:paddingTop="6dp"
+        android:paddingBottom="6dp"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp" />
 
-    <TextView android:id="@+id/contact_item_text"
-        android:layout_below="@id/contact_item_classifier"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/contact_item_text"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
-        android:layout_marginLeft="10dp"
-        android:text="overlapped at java runtime"
-        android:textSize="20sp"
-        android:textColor="#000000"
-        android:maxLines="1"
+        android:layout_below="@id/contact_item_classifier"
         android:fontFamily="@font/binggrae2"
-        xmlns:android="http://schemas.android.com/apk/res/android">
-    </TextView>
+        android:maxLines="1"
+        android:paddingLeft="20dp"
+        android:paddingTop="6dp"
+        android:paddingRight="20dp"
+        android:paddingBottom="6dp"
+        android:text="overlapped at java runtime"
+        android:textColor="@color/colorBlack"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-</RelativeLayout>
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorRed"
+        app:layout_constraintBottom_toBottomOf="@+id/contact_item_text"/>
+
+</LinearLayout>

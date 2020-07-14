@@ -89,7 +89,7 @@
 					android:outlineSpotShadowColor="@color/colorWhite"
 					android:textColorHighlight="@color/colorRed"
 					android:textColor="@color/colorBlack"
-					android:textCursorDrawable="@drawable/eddittext_cursor"
+					android:textCursorDrawable="@drawable/edittext_cursor"
 					android:background="#00000000"
 					/>
 			</LinearLayout>

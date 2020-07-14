@@ -1,52 +1,40 @@
 package com.example.project1;
 
-import android.animation.Animator;
-import android.app.AlertDialog;
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.fragment.app.DialogFragment;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
-import android.view.GestureDetector;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.List;
-import java.util.Locale;
+import java.util.Objects;
 
 public class todoFragment extends Fragment {
 
@@ -66,6 +54,14 @@ public class todoFragment extends Fragment {
 
     InputMethodManager imm;
 
+    CheckBox orderByAdd;
+    CheckBox orderByName;
+    CheckBox orderByDate;
+    CheckBox orderByEmotion;
+    int checkedBox;
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    @SuppressLint("SetTextI18n")
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -74,69 +70,135 @@ public class todoFragment extends Fragment {
         final ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_todo, container, false);
 
         todoView = (RecyclerView) rootView.findViewById(R.id.todoView);
-        //todoView.setHasFixedSize(true);
-
-        layoutManager = new LinearLayoutManager(getContext());
+        // RecyclerView 에 LinearLayoutManager 를 연결
+        layoutManager = new LinearLayoutManager(getContext()); // (참고) gridLayout도 있다!
         todoView.setLayoutManager(layoutManager);
-
+        // 내가 만든 RecyclerView.Adapter 인 TodoAdapter 만들고
+        // RecyclerView 에 연결
         adapter = new TodoAdapter(getContext(), todoDB);
         todoView.setAdapter(adapter);
 
+        // 오늘 날짜 가져오기
         Calendar calendar = new GregorianCalendar();
-        int curYear = calendar.get(Calendar.YEAR);
-        int curMonth = calendar.get(Calendar.MONTH); // 실제 월은 +1
-        int curDay = calendar.get(Calendar.DAY_OF_MONTH);
+        final int curYear = calendar.get(Calendar.YEAR);
+        final int curMonth = calendar.get(Calendar.MONTH); // 실제 월은 +1
+        final int curDay = calendar.get(Calendar.DAY_OF_MONTH);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd/HHmmss");
+        final String curDateAndTime = sdf.format(calendar.getTime());
 
-        dialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+        // 오늘 날짜로 세팅된 DatePickerDialog를 만들고
+        // dateButton 에도 초기화해 놓는다.
+        // (중요) month는 1~12가 아닌 0~11로 되어있다.
+        dialog = new DatePickerDialog(Objects.requireNonNull(getContext()), new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-                // month는 1~12가 아닌 0~11로 되어있다.
-                Toast.makeText(getContext(), i + "/" + (i1+1) + "/" + i2, Toast.LENGTH_SHORT).show();
+                // 캘린더에서 날짜 선택하면 button 값 변경
                 dateButton.setText(i + "/" + (i1+1) + "/" + i2);
             }
         }, curYear, curMonth, curDay);
 
+        // 객체들 초기값 설정
         totalTodo = rootView.findViewById(R.id.totalTodo);
         totalTodo.setText(numberOfItem() + "개");
         editTextTitle = rootView.findViewById(R.id.editTextTitle);
         addButton = rootView.findViewById(R.id.addButton);
         dateButton = rootView.findViewById(R.id.dateButton);
         dateButton.setText(curYear+ "/" + (curMonth+1) + "/" + curDay);
+
+        // dateButton 클릭 -> 캘린더 show
         dateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 dialog.show();
+                // 다른 theme의 dialog 띄우는 방법!
                 //DialogFragment dialogFragment = new DatePickerDialogTheme();
                 //dialogFragment.show(getFragmentManager(), "Theme");
             }
         });
 
-        startBlinkingAnim(editTextTitle);
+        // 입력란 반짝거리는 애니메이션
+        Animation blinkAnim = AnimationUtils.loadAnimation(getContext(), R.anim.blink);
+        editTextTitle.startAnimation(blinkAnim);
 
+        // 할일 추가할 때 키보드 내려가게 하기 위해 InputMethodManager 사용
         imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
 
+        // addButton 클릭하여 새로운 할일 추가
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String title = editTextTitle.getText().toString();
                 String date = dateButton.getText().toString();
-
+                // 입력란에 공백만 있는 경우
                 if(title.replace(" ", "").equals("")) {
                     Toast.makeText(getContext(), "title이 비어있어요.", Toast.LENGTH_LONG).show();
                     return;
                 }
+                // 성공적으로 할일이 등록되며 회전하는 애니메이션 발생
+                addButton.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.rotation));
+                // 입력된 정보들로 TodoItem 만들고 datebase 에 insert
                 int num = numberOfItem();
-                TodoItemView newItem = new TodoItemView(num, title, date, 0);
-
+                TodoItem newItem = new TodoItem(num, title, date, 0, curDateAndTime);
+                Log.d("hamApp", curDateAndTime);
                 insertItem(num, newItem);
+                // ListView 갱신
                 adapter.notifyDataSetChanged();
-                totalTodo.setText(numberOfItem() + "개");
-
+                // 총 개수를 보여주는 textView 업데이트
+                totalTodo.setText(num + "개");
+                // 입력란 비우기
                 editTextTitle.setText("");
-
+                // 키보드 내리기
                 imm.hideSoftInputFromWindow(editTextTitle.getWindowToken(), 0);
             }
         });
+
+        // sorting 을 위한 checkbox 들 정의.
+        // 하나만 체크되어 있을 수 있으며,
+        // checkBox 는 현재 체크되어 있는 박스의 인덱스
+        orderByAdd = rootView.findViewById(R.id.orderByAdd);
+        orderByName = rootView.findViewById(R.id.orderByName);
+        orderByDate = rootView.findViewById(R.id.orderByDate);
+        orderByEmotion = rootView.findViewById(R.id.orderByEmotion);
+        checkedBox = 0;
+
+        orderByName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(orderByName.isChecked()) {
+
+                    Log.d("hamApp", "order by name");
+
+                    switch(checkedBox) {
+                        case 0: orderByAdd.setChecked(false); break;
+                        case 2: orderByDate.setChecked(false); break;
+                        case 3: orderByEmotion.setChecked(false); break;
+                    }
+                    checkedBox = 1;
+
+                    String sqlCommand = "SELECT * FROM CONTACT ORDER BY TITLE ASC";
+                    Cursor cursor = todoDB.rawQuery(sqlCommand, null);
+                    if(cursor != null && cursor.getCount() != 0) {
+                        int count = 0;
+                        String title;
+                        while(cursor.moveToNext()) {
+                            title = cursor.getString(1);
+                            sqlCommand = "UPDATE CONTACT SET NUM = " + count + " WHERE TITLE = " + "'"+title+"'";
+                            Log.d("hamApp", sqlCommand);
+                            todoDB.execSQL(sqlCommand);
+                            count++;
+                        }
+                        adapter.notifyDataSetChanged();
+                    }
+                } else {
+                    orderByAdd.setChecked(true);
+                    checkedBox = 0;
+                }
+            }
+        });
+
+        // DB 모두 초기화
+        //String sqlDeleteAll = "DELETE FROM CONTACT";
+        //todoDB.execSQL(sqlDeleteAll);
 
         return rootView;
     }
@@ -148,15 +210,17 @@ public class todoFragment extends Fragment {
         totalTodo.setText(numberOfItem() + "개");
     }
 
-    public void insertItem(int num, TodoItemView newItem) {
+    public void insertItem(int num, TodoItem newItem) {
         //Log.d("hamApp todoFragment", "insertItem");
         if(todoDB == null) return;
 
         String sqlInsert = "INSERT INTO CONTACT " +
-                "(NUM, TITLE, DATE, EMOTION) VALUES (" +
+                "(NUM, TITLE, DATE, EMOTION, BIRTH) VALUES (" +
                 Integer.toString(num) + ", " +
                 "'" + newItem.getTitle() + "', " +
-                "'" + newItem.getDate() + "', " + "0)";
+                "'" + newItem.getDate() + "', " +
+                "0," +
+                "'" + newItem.getBirth() + "'" + ")";
 
         //Log.d("hamApp todoFragment", sqlInsert);
         todoDB.execSQL(sqlInsert);
@@ -195,9 +259,4 @@ public class todoFragment extends Fragment {
             return datepickerdialog;
         }
     }*/
-
-    public void startBlinkingAnim(View view) {
-        Animation blinkAnim = AnimationUtils.loadAnimation(getContext(), R.anim.blink);
-        view.startAnimation(blinkAnim);
-    }
 }

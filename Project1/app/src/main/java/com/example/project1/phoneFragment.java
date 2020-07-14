@@ -13,9 +13,12 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import java.util.ArrayList;
@@ -93,7 +96,6 @@ public class phoneFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable editable) {
-
             }
 
             @Override
@@ -234,13 +236,13 @@ public class phoneFragment extends Fragment {
                     if (position == 0)
                         view.getClassifier().setText("즐겨찾기");
                     else {
-                        view.getClassifier().setTextSize(0);
-                        view.getContact_item_background().setTextSize(0);
+                        //view.getClassifier().setTextSize(0);
+                        view.getClassifier().setVisibility(View.GONE);
                     }
                 } else {
                     if (profile_name.charAt(0) == view.getLast_character()) {
-                        view.getClassifier().setTextSize(0);
-                        view.getContact_item_background().setTextSize(0);
+                        //view.getClassifier().setTextSize(0);
+                        view.getClassifier().setVisibility(View.GONE);
                     } else {
                         view.getClassifier().setText(profile_name.substring(0, 1));
                     }
@@ -249,12 +251,16 @@ public class phoneFragment extends Fragment {
             }else{
                 // search 에 어떤 텍스트가 올라오긴 한거거든?
                 // 그럼 이제 classifier, contact_item_background는 없애줌.
-                view.getClassifier().setTextSize(0);
-                view.getContact_item_background().setTextSize(0);
+                //view.getClassifier().setTextSize(0);
+                view.getClassifier().setVisibility(View.GONE);
                 // 했고, 이제 prefix 가 같은지 확인 해줄것.
                 if(profile_name.substring(0,searched_text.length()).equals(searched_text) == false) {
                     // 얘는 표시하면 안됨.
-                    view.getContact_name().setTextSize(0);
+                    //view.getContact_name().setTextSize(0);
+                    view.setVisibility(View.GONE);
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT);
+                    //params.setMargins(0,0,0,0);
+                    view.getContact_name().setLayoutParams(params);
                     // 공간도 차지하면 안될것. 줄도. 없어야 할텐데.
                 }
             }

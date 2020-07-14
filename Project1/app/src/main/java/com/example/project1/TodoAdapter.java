@@ -1,5 +1,6 @@
 package com.example.project1;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -25,17 +26,21 @@ final class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.TodoViewHolder>
     private SQLiteDatabase todoDB;
     Context context;
 
-    boolean isCheckbox = true;
-
+    // ViewHolder : 각 view를 보관하는 holder 객체.
     public class TodoViewHolder extends RecyclerView.ViewHolder {
 
-        protected TextView num;
-        protected TextView title;
-        protected TextView date;
-        protected ImageButton emotion;
-        protected ImageButton emotion2;
-        LinearLayout textField;
-
+        protected TextView num;         // 총 할일 개수
+        protected TextView title;       // 할일
+        protected TextView date;        // 날짜
+        protected ImageButton emotion;  // 체크박스
+        protected TextView birth;       // 생성일
+        LinearLayout textField;         // 체크박스를 제외한 공간. 클릭시 디테일 창으로 이동한다.
+                                        // 체크박스의 이미지가 순서대로 저장되어 있다.
+        int[] emotions = {R.drawable.ic_emotion_0_no,
+                R.drawable.ic_emotion_1_smile,
+                R.drawable.ic_emotion_2_angry,
+                R.drawable.ic_emotion_3_sad};
+        Animation rotation = AnimationUtils.loadAnimation(context, R.anim.bounce);
 
         public TodoViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -44,25 +49,21 @@ final class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.TodoViewHolder>
             this.title = (TextView) itemView.findViewById(R.id.title);
             this.date = (TextView) itemView.findViewById(R.id.date);
             this.emotion = (ImageButton) itemView.findViewById(R.id.emotionButton);
-            this.emotion2 = (ImageButton) itemView.findViewById(R.id.emotionButton2);
+            this.birth = (TextView) itemView.findViewById(R.id.birth);
 
-            final Animation rotation = AnimationUtils.loadAnimation(context, R.anim.bounce);
-
-            final int[] emotions = {R.drawable.ic_emotion_0_no, R.drawable.ic_emotion_1_smile, R.drawable.ic_emotion_2_angry, R.drawable.ic_emotion_3_sad};
-
+            // 체크박스 클릭시 순서대로 이미지 변경
             emotion.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    int position = getAdapterPosition();
-                    Log.d("hamApp TodoAdapter", "touch checkBox: index: " + Integer.toString(position));
-                    changeEmotion(getAdapterPosition());
+                    int position = getAdapterPosition();                    // 클릭된 아이템의 index
+                    changeEmotion(position);
 
                     emotion.startAnimation(rotation);
                     emotion.setImageResource(emotions[getEmotion(position)]);
                 }
             });
 
-            textField = itemView.findViewById(R.id.textField);
+            /*textField = itemView.findViewById(R.id.textField);
             textField.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -77,7 +78,7 @@ final class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.TodoViewHolder>
                     context.startActivity(intent);
                     ((MainActivity)context).overridePendingTransition(R.anim.sliding_up, R.anim.stay);
                 }
-            });
+            });*/
         }
     }
 
@@ -88,20 +89,27 @@ final class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.TodoViewHolder>
 
     @NonNull
     @Override
+    // 새로운 View를 생성할 때 실행되어 ViewHolder를 반환
     public TodoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        // convertView가 null 일 때 inflate 하고 ViewHolder를 생성
+        // -> 각 요소를 findViewById를 통해 저장
+        // -> 그리고 앞으로는 ViewHolder를 getTag로 불러와서 재사용한다. 즉 find~를 다시 안 해도 된다.
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.todoitem, parent, false);
         TodoViewHolder viewHolder = new TodoViewHolder(view);
 
         return viewHolder;
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
+    // ViewHolder의 내용을 변경
     public void onBindViewHolder(@NonNull TodoViewHolder holder, int position) {
 
-        if(position < 9) holder.num.setText("0" + position);
-        else holder.num.setText(""+position);
+        if(position < 10) holder.num.setText("0" + position);
+        else holder.num.setText(Integer.toString(position));
         holder.title.setText(getTitle(position));
         holder.date.setText(getDate(position));
+        holder.birth.setText(getBirth(position));
         switch(getEmotion(position)) {
             case 0:
                 holder.emotion.setImageResource(R.drawable.ic_emotion_0_no); break;
@@ -141,7 +149,6 @@ final class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.TodoViewHolder>
 
     String getDate(int position) {
         //Log.d("hamApp TodoAdapter", "getDate");
-
         if(todoDB == null) return null;
 
         String sqlInsert = "SELECT * FROM CONTACT " +
@@ -164,6 +171,18 @@ final class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.TodoViewHolder>
 
         Log.d("hamApp TodoAdapter", Integer.toString(cursor.getInt(3)));
         return cursor.getInt(3);
+    }
+
+    String getBirth(int position) {
+        if(todoDB == null) return null;
+        String sqlQuery = "SELECT * FROM CONTACT " +
+                "WHERE NUM = " +
+                Integer.toString(position);
+
+        Cursor cursor = todoDB.rawQuery(sqlQuery, null);
+        cursor.moveToNext();
+
+        return cursor.getString(4);
     }
 
     void changeEmotion(int position) {
