@@ -21,7 +21,7 @@
         android:background="@android:color/transparent"
 
         android:layout_width="wrap_content"
-        android:text="&lt; Contacts"
+        android:text="&lt; 목록"
         android:fontFamily="@font/calibri_bold"
         android:textSize="20sp"
         android:layout_marginLeft="20dp"
@@ -29,7 +29,7 @@
 
     <Button android:id="@+id/button_change_to_edit_mode"
         android:layout_width="wrap_content"
-        android:text="+ Edit"
+        android:text="+ 편집"
         android:layout_alignRight="@id/contact_description_top"
         android:fontFamily="@font/calibri_bold"
         android:background="@android:color/transparent"
@@ -100,6 +100,7 @@
 
     </FrameLayout>
 
+
     <TextView android:id="@+id/contact_company"
         android:layout_width="match_parent"
         android:background="#FFFFFF"
@@ -112,11 +113,77 @@
         android:textSize="20sp"
         android:layout_height="wrap_content"/>
 
-    <TextView android:id="@+id/contact_description_bottom"
+    <RelativeLayout android:id="@+id/direct_frame"
         android:layout_width="match_parent"
-        android:layout_below="@id/contact_description_middle"
-        android:layout_centerInParent="true"
-        android:layout_height="match_parent"/>
+        android:layout_height="60dp"
+        android:gravity="center"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/contact_company">
+
+        <ImageView android:id="@+id/dial_button"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/dial_image_false"/>
+
+        <TextView
+            android:id="@+id/dial_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/dial_button"
+            android:layout_marginLeft="8dp"
+            android:textColor="#000000"
+            android:text="전화"
+            android:textAlignment="center"
+            android:textSize="12sp"
+            android:gravity="center" />
+
+        <ImageView android:id="@+id/message_button"
+            android:layout_toRightOf="@id/dial_button"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="15dp"
+            android:src="@drawable/message_image_false" />
+
+        <TextView
+            android:id="@+id/message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="28dp"
+            android:layout_toRightOf="@id/dial_text"
+            android:layout_below="@id/message_button"
+            android:text="메시지"
+            android:textColor="#000000"
+            android:textAlignment="center"
+            android:textSize="12sp"
+            android:gravity="center" />
+
+        <ImageView android:id="@+id/email_button"
+            android:layout_toRightOf="@id/message_button"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="15dp"
+            android:src="@drawable/email_image_false" />
+
+        <TextView
+            android:id="@+id/email_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/email_button"
+            android:layout_marginLeft="114dp"
+            android:textColor="#000000"
+            android:text="이메일"
+            android:textSize="12sp"
+            android:gravity="center" />
+
+
+    </RelativeLayout>
+
+    <TextView android:id="@+id/contact_description_bottom"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_below="@id/direct_frame"
+        android:layout_centerInParent="true" />
 
     <LinearLayout
         android:id="@+id/bottom_contents"
@@ -126,7 +193,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginLeft="10dp"
         android:scrollbarSize="20dp"
-        android:layout_below="@id/contact_company"
+        android:layout_below="@id/direct_frame"
         android:orientation="vertical">
 
         <TextView android:layout_above="@id/bottom_contents"
@@ -138,7 +205,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="20dp"
-            android:text="mobile"
+            android:text="휴대전화"
             android:textColor="#000000"
             android:textSize="14sp" />
 
@@ -161,7 +228,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="18dp"
-            android:text="email"
+            android:text="이메일"
             android:textColor="#000000"
             android:textSize="14sp" />
 
@@ -185,7 +252,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="18dp"
-            android:text="homepage"
+            android:text="웹사이트"
             android:textColor="#000000"
             android:textSize="14sp" />
 
@@ -208,7 +275,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="18dp"
-            android:text="Notes"
+            android:text="설명"
             android:textColor="#000000"
             android:textSize="14sp" />
 
@@ -235,7 +302,7 @@
             android:layout_height="20dp"
             android:layout_marginTop="6dp"
             android:background="@android:color/transparent"
-            android:text="+ Star this Caller"
+            android:text="+ 즐쳐찾기에 추가 "
             android:fontFamily="@font/montserrat_extrabold"
             android:textColor="#000000"
             android:textSize="14sp" />
