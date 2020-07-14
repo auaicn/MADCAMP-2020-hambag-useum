@@ -154,6 +154,7 @@ Application Install 마다 유지되는 하나의 Database를 생성하였습니
 openOrCreateDatabase 함수는, 해당 경로의 Database가 있을 경우에는, db를 열어주며, 없는 경우, 생성후 열어줍니다.  
 Database 경로는, 안드로이드 OS내부의 SQLite 프로그램이 db파일을 모아두는 폴더에,  
 사용자가 정의한 databaseFileName을 append한 String과 같습니다.  
+
 ```
 MainActivity.java:init_database:
 {    
@@ -172,6 +173,7 @@ MainActivity.java:init_database:
 ```
 
 Table 은, 4개의 column을 가지도록 구성하였습니다.  
+
 ```
 MainActivity.java:init_tables:
 {    
@@ -187,6 +189,8 @@ onClick Events
 1. To-do List checkbox
     
 ![Alt text](https://github.com/auaicn/common_assignment/blob/master/images/emotions.png)  
+
+
 
 
 2. To-do List Item  
