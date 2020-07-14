@@ -10,13 +10,14 @@
         4. 세번재 탭에서 구현한, To-do List의 항목별 세부사항을 위한 액티비티
         가 있습니다.
         
-        탭 구조를 구현하기 위해서, android 에 기본 내장되어 있는 material design 의 TabLayout 을 사용하였습니다.<br>
-        ViewPager를 이용하여, ViewPagerAdapter에 추가해놓은 각 탭의 Fragment가 화면에 표시 될 수 있도록, MainActivity.java의 onCreate() 에서 처리해주었습니다.<br>
-        탭 3에서 to-do List에는 SQLite Database를 사용하였으며, 이를 위한 초기화 또한 MainActivity에서 진행하였습니다.<br>
+        탭 구조를 구현하기 위해서, android 에 기본 내장되어 있는 material design 의 TabLayout 을 사용하였습니다.
+        ViewPager를 이용하여, ViewPagerAdapter에 추가해놓은 각 탭의 Fragment가 화면에 표시 될 수 있도록, MainActivity.java의 onCreate() 에서 처리해주었습니다.
+        탭 3에서 to-do List에는 SQLite Database를 사용하였으며, 이를 위한 초기화 또한 MainActivity에서 진행하였습니다.
         
     2. About Permission
         AndroidManifest.xml 파일에 Contacts, External Storage, Direct_Dial 등 앱 실행에 필요한 권한들을 명시해 두었습니다.
-![alt text](https://github.com/auaicn/common_assignment/images/permission.png "Code about permission")
+   
+   ![Alt text](https://github.com/auaicn/common_assignment/images/permission.png)
         
         
 <h2> 1. 첫번째 탭 </h2>
