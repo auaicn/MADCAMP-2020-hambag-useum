@@ -10,7 +10,17 @@ public class SingleItemView extends RelativeLayout {
 
     TextView classifier;
     TextView contact_name;
+    TextView contact_item_background;
+
     public static char last_character;
+
+    public TextView getContact_item_background() {
+        return contact_item_background;
+    }
+
+    public void setContact_item_background(TextView contact_item_background) {
+        this.contact_item_background = contact_item_background;
+    }
 
     public TextView getClassifier() {
         return classifier;
@@ -53,9 +63,9 @@ public class SingleItemView extends RelativeLayout {
 
         // item 이라고 해서, 하나의 뷰를 xml로 정의할 수 있지만,
         // 연락처 탭에서 필요한건 이름만으로 구성하였다. 전화번호는 onclick 후 세부사항에서 확인 할 수 있다.
+        // 넣는다면 넣어줄 수는 있슴.
         classifier  = (TextView) findViewById(R.id.contact_item_classifier);
         contact_name = (TextView) findViewById(R.id.contact_item_text);
-
     }
 
 }

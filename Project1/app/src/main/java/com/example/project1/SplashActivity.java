@@ -25,7 +25,8 @@ public class SplashActivity extends Activity {
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.READ_CONTACTS,
-            Manifest.permission.WRITE_CONTACTS
+            Manifest.permission.WRITE_CONTACTS,
+            Manifest.permission.CALL_PHONE
     };
 
     @Override
@@ -86,15 +87,15 @@ public class SplashActivity extends Activity {
 
         Log.d("hamApp splash", "arePermissionsDenied");
 
-        for (int i = 0; i < 4; i++) {
-            // 4개의 요청사항 중 하나라도 허용하지 않은 상태일 경우
+        for (int i = 0; i < 5; i++) {
+            // 5개의 요청사항 중 하나라도 허용하지 않은 상태일 경우
             // fragment에서는 this 대신 getContext()
             if (ContextCompat.checkSelfPermission(this, PERMISSIONS[i]) != PackageManager.PERMISSION_GRANTED) {
                 Log.d("hamApp Splash", "true");
                 return true;
             }
         }
-        // 4개 요청사항이 모두 허용된 경우
+        // 5개 요청사항이 모두 허용된 경우
         Log.d("hamApp Splash", "false");
         return false;
     }

@@ -26,16 +26,11 @@
 		android:layout_height="match_parent">
 
 		<ImageView
-			android:id="@+id/emojiView1"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:src="@drawable/splash_emoji_1" />
-
-		<ImageView
 			android:id="@+id/emojiView2"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:src="@drawable/splash_emoji_2" />
+			android:src="@drawable/splash_emoji_2"
+			android:scrollY="40dp"/>
 
 		<ImageView
 			android:id="@+id/emojiView3"
@@ -44,16 +39,22 @@
 			android:src="@drawable/splash_emoji_3" />
 
 		<ImageView
-			android:id="@+id/emojiView4"
+			android:id="@+id/emojiView1"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:src="@drawable/splash_emoji_4" />
+			android:src="@drawable/splash_emoji_1" />
 
 		<ImageView
 			android:id="@+id/emojiView5"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:src="@drawable/splash_emoji_5" />
+
+		<ImageView
+			android:id="@+id/emojiView4"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:src="@drawable/splash_emoji_4" />
 
 		<ImageView
 			android:id="@+id/emojiView6"

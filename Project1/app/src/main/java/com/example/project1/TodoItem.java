@@ -10,18 +10,20 @@ import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-public class TodoItemView {
+public class TodoItem {
 
     private int num;
     private String title;
     private String date;
     private int emotion;
+    private String birth;
 
-    public TodoItemView(int num, String title, String date, int emotion) {
+    public TodoItem(int num, String title, String date, int emotion, String birth) {
         this.num = num;
         this.title = title;
         this.date = date;
         this.emotion = emotion;
+        this.birth = birth;
     }
 
     public int getNum() {
@@ -54,5 +56,13 @@ public class TodoItemView {
 
     public void setEmotion(int emotion) {
         this.emotion = emotion;
+    }
+
+    public String getBirth() {
+        return birth;
+    }
+
+    public void setBirth(String birth) {
+        this.birth = birth;
     }
 }

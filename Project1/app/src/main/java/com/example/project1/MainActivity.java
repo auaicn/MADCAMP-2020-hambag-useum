@@ -45,8 +45,6 @@ import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
-    ConstraintLayout constraintLayout;
-
     private ViewPager viewPager;
     private TabLayout tabLayout;
 
@@ -146,7 +144,8 @@ public class MainActivity extends AppCompatActivity {
                 "NUM "      + "INTEGER NOT NULL," +
                 "TITLE "    + "STRING NOT NULL," +
                 "DATE "     + "STRING NOT NULL," +
-                "EMOTION "  + "INTEGER NOT NULL" + ")";
+                "EMOTION "  + "INTEGER NOT NULL," +
+                "BIRTH "    + "STRING NOT NULL" + ")";
         System.out.println(sqlCreateTbl);
         sqliteDB.execSQL(sqlCreateTbl);
     }
@@ -155,14 +154,14 @@ public class MainActivity extends AppCompatActivity {
 
         Log.d("hamApp main", "arePermissionsDenied");
 
-        for (int i = 0; i < 4; i++) {
-            // 4개의 요청사항 중 하나라도 허용하지 않은 상태일 경우
+        for (int i = 0; i < 5; i++) {
+            // 5개의 요청사항 중 하나라도 허용하지 않은 상태일 경우
             // fragment에서는 this 대신 getContext()
             if (ContextCompat.checkSelfPermission(this, PERMISSIONS[i]) != PackageManager.PERMISSION_GRANTED) {
                 return true;
             }
         }
-        // 4개 요청사항이 모두 허용된 경우
+        // 5개 요청사항이 모두 허용된 경우
         return false;
     }
 

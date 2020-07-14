@@ -95,8 +95,8 @@ public class TodoDetailActivity extends AppCompatActivity {
     }
 
     // 기기 back button 막기
-    @Override
+    /*@Override
     public void onBackPressed() {
         return;
-    }
+    }*/
 }

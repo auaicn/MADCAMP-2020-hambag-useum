@@ -25,7 +25,6 @@ public class SingleItem {
     private final String new_line = "\n";
     private final String own_delimiter = "__";
 
-
     public SingleItem() {
         this.PHOTO_URI = "";
         this.DISPLAY_NAME = "";
@@ -175,21 +174,6 @@ public class SingleItem {
                         item.setCOMPANY(website_url);
                         Log.d("company name : ", website_url);
                     }
-
-                    /*
-                    // COMPANY NAME
-                    cursor_detail = resolver.query(ContactsContract.Data.CONTENT_URI,
-                            projection,
-                            ContactsContract.Data.CONTACT_ID + " = " + data_ID
-                                    + " and " + ContactsContract.Data.MIMETYPE + " = '" + ContactsContract.CommonDataKinds.Organization.CONTENT_ITEM_TYPE + "'",
-                            null,
-                            null);
-
-                    while(cursor_detail.moveToNext()) {
-                        String company_name = cursor_detail.getString(cursor_detail.getColumnIndex(ContactsContract.CommonDataKinds.Website.URL));
-                        item.setCOMPANY(company_name);
-                        Log.d("company name : ", company_name);
-                    }*/
 
                     // NOTE
                     cursor_detail = resolver.query(ContactsContract.Data.CONTENT_URI,
