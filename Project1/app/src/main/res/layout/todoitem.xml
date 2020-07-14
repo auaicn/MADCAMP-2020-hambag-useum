@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:text="00"
             android:textSize="10sp"
-            android:textColor="@color/colorRed"
+            android:textColor="@color/colorGreen"
             android:layout_marginRight="3dp"
             android:layout_marginTop="5dp"
             android:layout_gravity="top"
@@ -44,19 +44,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:maxLines="1"
-                android:text="할 일을 적어주세요."
-                android:textColor="#3E3E3E"
-                android:textSize="20sp"
+                android:textColor="@color/colorBlack"
+                android:textSize="16sp"
                 android:textStyle="bold"
                 android:fontFamily="@font/binggrae2"/>
 
             <TextView
                 android:id="@+id/date"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="0000/00/00"
-                android:textColor="@android:color/holo_blue_dark"
-                android:textSize="13sp"
+                android:textColor="@color/colorGray"
+                android:textSize="10sp"
                 android:fontFamily="@font/binggrae2"/>
         </LinearLayout>
 
@@ -72,6 +71,16 @@
         app:layout_constraintTop_toTopOf="parent"
         android:background="#00000000"
         android:clickable="true"/>
+
+    <ImageButton
+        android:id="@+id/emotionButton2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="#00000000"
+        android:clickable="true" />
 
     <View
         android:layout_width="wrap_content"

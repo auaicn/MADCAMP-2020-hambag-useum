@@ -1,6 +1,5 @@
 package com.example.project1;
 
-import android.animation.Animator;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -11,12 +10,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 
@@ -33,6 +33,7 @@ final class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.TodoViewHolder>
         protected TextView title;
         protected TextView date;
         protected ImageButton emotion;
+        protected ImageButton emotion2;
         LinearLayout textField;
 
 
@@ -43,6 +44,11 @@ final class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.TodoViewHolder>
             this.title = (TextView) itemView.findViewById(R.id.title);
             this.date = (TextView) itemView.findViewById(R.id.date);
             this.emotion = (ImageButton) itemView.findViewById(R.id.emotionButton);
+            this.emotion2 = (ImageButton) itemView.findViewById(R.id.emotionButton2);
+
+            final Animation rotation = AnimationUtils.loadAnimation(context, R.anim.bounce);
+
+            final int[] emotions = {R.drawable.ic_emotion_0_no, R.drawable.ic_emotion_1_smile, R.drawable.ic_emotion_2_angry, R.drawable.ic_emotion_3_sad};
 
             emotion.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -50,17 +56,9 @@ final class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.TodoViewHolder>
                     int position = getAdapterPosition();
                     Log.d("hamApp TodoAdapter", "touch checkBox: index: " + Integer.toString(position));
                     changeEmotion(getAdapterPosition());
-                    switch(getEmotion(position)) {
-                        case 0:
-                            emotion.setImageResource(R.drawable.ic_0_no); break;
-                        case 1:
-                            emotion.setImageResource(R.drawable.ic_1_smile); break;
-                        case 2:
-                            emotion.setImageResource(R.drawable.ic_2_angry); break;
-                        case 3:
-                            emotion.setImageResource(R.drawable.ic_3_sad); break;
-                    }
-                    Log.d("hamApp TodoAdapter", "--click end--");
+
+                    emotion.startAnimation(rotation);
+                    emotion.setImageResource(emotions[getEmotion(position)]);
                 }
             });
 
@@ -100,19 +98,19 @@ final class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.TodoViewHolder>
     @Override
     public void onBindViewHolder(@NonNull TodoViewHolder holder, int position) {
 
-        if(position < 10) holder.num.setText("0" + position);
+        if(position < 9) holder.num.setText("0" + position);
         else holder.num.setText(""+position);
         holder.title.setText(getTitle(position));
         holder.date.setText(getDate(position));
         switch(getEmotion(position)) {
             case 0:
-                holder.emotion.setImageResource(R.drawable.ic_0_no); break;
+                holder.emotion.setImageResource(R.drawable.ic_emotion_0_no); break;
             case 1:
-                holder.emotion.setImageResource(R.drawable.ic_1_smile); break;
+                holder.emotion.setImageResource(R.drawable.ic_emotion_1_smile); break;
             case 2:
-                holder.emotion.setImageResource(R.drawable.ic_2_angry); break;
+                holder.emotion.setImageResource(R.drawable.ic_emotion_2_angry); break;
             case 3:
-                holder.emotion.setImageResource(R.drawable.ic_3_sad); break;
+                holder.emotion.setImageResource(R.drawable.ic_emotion_3_sad); break;
         }
     }
 

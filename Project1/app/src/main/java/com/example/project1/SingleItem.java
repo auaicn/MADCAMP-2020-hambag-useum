@@ -176,6 +176,7 @@ public class SingleItem {
                         Log.d("company name : ", website_url);
                     }
 
+                    /*
                     // COMPANY NAME
                     cursor_detail = resolver.query(ContactsContract.Data.CONTENT_URI,
                             projection,
@@ -188,7 +189,7 @@ public class SingleItem {
                         String company_name = cursor_detail.getString(cursor_detail.getColumnIndex(ContactsContract.CommonDataKinds.Website.URL));
                         item.setCOMPANY(company_name);
                         Log.d("company name : ", company_name);
-                    }
+                    }*/
 
                     // NOTE
                     cursor_detail = resolver.query(ContactsContract.Data.CONTENT_URI,

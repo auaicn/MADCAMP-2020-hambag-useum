@@ -47,7 +47,6 @@ public class MainActivity extends AppCompatActivity {
 
     ConstraintLayout constraintLayout;
 
-    private Toolbar toolbar;
     private ViewPager viewPager;
     private TabLayout tabLayout;
 
@@ -70,7 +69,6 @@ public class MainActivity extends AppCompatActivity {
         MY_REQUEST_PERMISSIONS = intent.getExtras().getInt("myPermissionCode");
         PERMISSIONS = intent.getExtras().getStringArray("permissionList");
 
-        toolbar = findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
 
         viewPager = findViewById(R.id.view_pager);
@@ -82,9 +80,9 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
 
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), 0);
-        viewPagerAdapter.addFragment(phoneFragment, "Contact");
-        viewPagerAdapter.addFragment(photoFragment, "Photo");
-        viewPagerAdapter.addFragment(todoFragment, "To-Do");
+        viewPagerAdapter.addFragment(phoneFragment, getString(R.string.title_menu1));
+        viewPagerAdapter.addFragment(photoFragment, getString(R.string.title_menu2));
+        viewPagerAdapter.addFragment(todoFragment, getString(R.string.title_menu3));
         viewPager.setAdapter(viewPagerAdapter);
 
         todoFragment.todoDB = init_database("todoList.db");
