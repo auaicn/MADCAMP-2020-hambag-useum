@@ -25,7 +25,6 @@ public class SingleItem {
     private final String new_line = "\n";
     private final String own_delimiter = "__";
 
-
     public SingleItem() {
         this.PHOTO_URI = "";
         this.DISPLAY_NAME = "";
@@ -187,7 +186,7 @@ public class SingleItem {
                     while(cursor_detail.moveToNext()) {
                         String company_name = cursor_detail.getString(cursor_detail.getColumnIndex(ContactsContract.CommonDataKinds.Website.URL));
                         item.setCOMPANY(company_name);
-                        Log.d("company name : ", company_name);
+                        //Log.d("company name : ", company_name);
                     }
 
                     // NOTE
