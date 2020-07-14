@@ -148,11 +148,27 @@ To-do List를 구현하였습니다.
 5. 해야할 일을, 현재 날짜에서 가까운 것 우선으로 상단에 배치하였습니다.  
 6. 완료한 할 일에 대해, 성취도를 설정할 수 있도록, 여러번 터치 시, 체크박스의 이미지를 변화시킬 수 있는 기능을 추가하였습니다.  
 
+<h3>About DataBase Creation </h3>  
+Application Install 마다 유지되는 하나의 Database를 생성한다.  
+openOrCreateDatabase 함수는, 해당 경로의 Database가 있을 경우에는, db를 열어주며, 없는 경우, 생성후 열어준다.  
+Database 경로는, 안드로이드 OS내부의 SQLite 프로그램이 db파일을 모아두는 폴더에, 사용자가 정의한 databaseFileName을 append한  
+String과 같다.  
+```
+MainActivity.java:init_database:
+{    
+    ...
 
-
-
-
-
+    File file = new File(getFilesDir(), databaseFileName);
+    try {
+        db = SQLiteDatabase.openOrCreateDatabase(file, null);
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    
+    ...
+    return db;
+}
+```
 
 <h2> 4. Extras </h2>
   
