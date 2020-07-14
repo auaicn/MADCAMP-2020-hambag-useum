@@ -18,13 +18,17 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@android:color/holo_blue_bright">
+            android:background="@color/colorWhite"
+            android:gravity="center">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="~ MAIN TITLE ~"
+                android:text="함박웃음"
                 android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                android:textColor="@android:color/holo_blue_dark"/>
+                android:textColor="@color/colorApricot"
+                android:fontFamily="@font/binggrae2_bold"
+                android:layout_gravity="center"
+                android:textSize="30sp"/>
         </androidx.appcompat.widget.Toolbar>
 
         <com.google.android.material.tabs.TabLayout
@@ -33,13 +37,17 @@
             android:layout_height="wrap_content"
             app:tabMode="fixed"
             app:tabGravity="fill"
-            app:tabTextColor="@android:color/white"
-            android:background="@android:color/holo_blue_light">
+            app:tabTextColor="@color/colorOrange_dark"
+            android:background="@color/colorApricot"
+            app:tabTextAppearance="@style/tab_text"
+            app:tabIndicatorColor="@color/colorOrange_dark"
+            app:tabRippleColor="@color/colorRed"
+            app:tabSelectedTextColor="@color/colorWhite">
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Contact" />
+                android:text="@string/title_menu1" />
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"

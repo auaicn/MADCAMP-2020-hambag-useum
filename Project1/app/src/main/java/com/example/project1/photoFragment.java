@@ -189,7 +189,7 @@ public class photoFragment extends Fragment {
             //Log.d("hamApp", "getView");
             final ImageView imageView;
             if(view == null) {
-                imageView = (ImageView) LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item, viewGroup, false);
+                imageView = (ImageView) LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.photoitem, viewGroup, false);
             } else {
                 imageView = (ImageView) view;
             }

@@ -55,8 +55,7 @@
     <ImageView android:id="@+id/profile_image"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:scaleType="fitXY"
-        android:src="@drawable/animal2" />
+        android:scaleType="fitXY" />
     <TextView android:id="@+id/contact_id"
         android:layout_width="0dp"
         android:layout_height="0dp" />
