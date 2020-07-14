@@ -12,17 +12,15 @@
 		android:id="@+id/editPage"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-
-		android:background="@android:color/holo_blue_dark"
+		android:background="@color/colorApricot"
 		android:orientation="vertical"
 		android:paddingTop="40dp"
-		android:paddingLeft="20dp"
-		android:paddingRight="20dp"
+		android:paddingLeft="40dp"
+		android:paddingRight="40dp"
 		android:paddingBottom="40dp"
-		app:layout_constraintBottom_toBottomOf="parent"
-		tools:layout_editor_absoluteX="30dp">
+		app:layout_constraintBottom_toBottomOf="parent">
 
-		<LinearLayout
+		<FrameLayout
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:orientation="horizontal">
@@ -31,9 +29,11 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_weight="1"
-				android:text="New To-Do"
-				android:textColor="@android:color/white"
-				android:textSize="20sp" />
+				android:text="편집해 보세요"
+				android:textColor="@color/colorWhite"
+				android:textSize="30sp"
+				android:fontFamily="@font/binggrae2_bold"
+				android:layout_gravity="center"/>
 
 			<ImageButton
 				android:layout_width="wrap_content"
@@ -42,86 +42,84 @@
 				android:layout_gravity="right"
 				android:background="#00FFFFFF"
 				android:onClick="closeClick"
-				android:src="@drawable/ic_close" />
+				android:src="@drawable/ic_x_red" />
 
-		</LinearLayout>
+		</FrameLayout>
 
 		<LinearLayout
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:orientation="vertical">
+			android:orientation="vertical"
+			android:paddingBottom="10dp"
+			android:paddingTop="20dp">
 
 			<TextView
 				android:id="@+id/titleText"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:paddingTop="10dp"
-				android:text="To-do"
-				android:textSize="15sp" />
+				android:text="할일"
+				android:textSize="15sp"
+				android:fontFamily="@font/binggrae2_bold"
+				android:textColor="@color/colorOrange_dark"/>
 
 			<LinearLayout
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:layout_gravity="bottom">
+				android:layout_gravity="bottom"
+				android:paddingTop="10dp">
 
 				<TextView
 					android:id="@+id/num"
 					android:layout_width="17dp"
 					android:layout_height="17dp"
 					android:layout_gravity="top"
-					android:background="@android:color/white"
 					android:gravity="center"
 					android:text="00"
-					android:textColor="#F44336"
-					android:textSize="10sp" />
+					android:textColor="@color/colorWhite"
+					android:textSize="10sp"
+					android:fontFamily="@font/binggrae2_bold"
+					android:layout_marginRight="10dp"/>
 
 				<EditText
 					android:id="@+id/titleEditText"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
-					android:maxLines="1"/>
+					android:maxLines="1"
+					android:hint="할일을 적어주세요!"
+					android:outlineSpotShadowColor="@color/colorWhite"
+					android:textColorHighlight="@color/colorRed"
+					android:textColor="@color/colorBlack"
+					android:textCursorDrawable="@drawable/eddittext_cursor"
+					android:background="#00000000"
+					/>
 			</LinearLayout>
 
 		</LinearLayout>
 
-		<FrameLayout
-			android:layout_width="match_parent"
-			android:layout_height="90dp">
+		<TextView
+			android:id="@+id/dateText"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="날짜"
+			android:textSize="15sp"
+			android:fontFamily="@font/binggrae2_bold"
+			android:textColor="@color/colorOrange_dark"
+			android:paddingTop="20dp"/>
 
-			<TextView
-				android:id="@+id/dateText"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:paddingTop="10dp"
-				android:text="Date"
-				android:textSize="15sp" />
-
-			<Button
-				android:id="@+id/dateButton"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:layout_gravity="bottom"
-				android:background="#00FFFFFF" />
-
-			<View
-				android:layout_width="wrap_content"
-				android:layout_height="1dp"
-				android:layout_gravity="bottom"
-				android:layout_marginTop="10dp" />
-
-		</FrameLayout>
 
 		<DatePicker
 			android:id="@+id/datePicker"
 			android:layout_width="wrap_content"
-			android:layout_height="300dp"
+			android:layout_height="wrap_content"
 			android:layout_gravity="center"
-			style="@android:style/Widget.DatePicker"/>
+			style="@android:style/Widget.DatePicker"
+			android:calendarTextColor="@color/colorRed"/>
 
 		<LinearLayout
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:layout_marginTop="20dp">
+			android:layout_marginTop="20dp"
+			android:padding="10dp">
 
 			<Button
 				android:id="@+id/editButton"
@@ -129,7 +127,11 @@
 				android:layout_height="wrap_content"
 				android:layout_weight="1"
 				android:onClick="editClick"
-				android:text="Edit" />
+				android:text="수정"
+				android:textColor="@color/colorWhite"
+				android:fontFamily="@font/binggrae2_bold"
+				android:background="@drawable/buttonshape_green"
+				android:layout_margin="5dp"/>
 
 			<Button
 				android:id="@+id/deleteButton"
@@ -137,7 +139,11 @@
 				android:layout_height="wrap_content"
 				android:layout_weight="1"
 				android:onClick="deleteClick"
-				android:text="Delete" />
+				android:text="삭제"
+				android:fontFamily="@font/binggrae2_bold"
+				android:textColor="@color/colorWhite"
+				android:background="@drawable/buttonshape_red"
+				android:layout_margin="5dp"/>
 
 		</LinearLayout>
 
