@@ -149,10 +149,11 @@ To-do List를 구현하였습니다.
 6. 완료한 할 일에 대해, 성취도를 설정할 수 있도록, 여러번 터치 시, 체크박스의 이미지를 변화시킬 수 있는 기능을 추가하였습니다.  
 
 <h3>About DataBase Creation </h3>  
-Application Install 마다 유지되는 하나의 Database를 생성한다.  
-openOrCreateDatabase 함수는, 해당 경로의 Database가 있을 경우에는, db를 열어주며, 없는 경우, 생성후 열어준다.  
-Database 경로는, 안드로이드 OS내부의 SQLite 프로그램이 db파일을 모아두는 폴더에, 사용자가 정의한 databaseFileName을 append한  
-String과 같다.  
+  
+Application Install 마다 유지되는 하나의 Database를 생성하였습니다.   
+openOrCreateDatabase 함수는, 해당 경로의 Database가 있을 경우에는, db를 열어주며, 없는 경우, 생성후 열어줍니다.  
+Database 경로는, 안드로이드 OS내부의 SQLite 프로그램이 db파일을 모아두는 폴더에,  
+사용자가 정의한 databaseFileName을 append한 String과 같습니다.  
 ```
 MainActivity.java:init_database:
 {    
@@ -169,6 +170,80 @@ MainActivity.java:init_database:
     return db;
 }
 ```
+
+Table 은, 4개의 column을 가지도록 구성하였습니다.  
+```
+MainActivity.java:init_tables:
+{    
+    ...
+    String sqlCreateTbl = "CREATE TABLE IF NOT EXISTS "+ tableName + " (" +
+        "NUM "      + "INTEGER NOT NULL," +
+        "TITLE "    + "STRING NOT NULL," +
+        "DATE "     + "STRING NOT NULL," +
+        "EMOTION "  + "INTEGER NOT NULL" + ")";
+```
+
+onClick Events
+1. To-do List checkbox
+    
+![Alt text](https://github.com/auaicn/common_assignment/blob/master/images/emotions.png)  
+
+
+2. To-do List Item  
+클릭시, TodoDetailActivity 를 시작합니다.  
+Intent putExtra를 통해, `todoFragment`에서, `TodoDetailActivity` 에게 클릭된 항목의 database field 값을 전달합니다.  
+전달 받은 값으로 `android.widget.datePicker` Class의 객체를 생성합니다.  
+GregorianCalendar의 month enum의 January는 0에서 시작하기 때문에, 1을 더해주는 과정을 추가하였습니다.  
+
+![Alt text](https://github.com/auaicn/common_assignment/blob/master/images/scroll_to_date_change.png)  
+
+```
+TodoDetailActivity.java:editClick():
+{
+    ...
+    // Get newTitle 
+    String newTitle = titleEditText.getText().toString();
+    
+    // Get newDate
+    String newDate = datePicker.getYear() + "/" + (datePicker.getMonth()+1) + "/" + datePicker.getDayOfMonth();
+    if(newTitle.replace(" ", "").equals("")) {
+        Toast.makeText(this, "title이 비어있어요.", Toast.LENGTH_LONG).show();
+        return;
+    }
+    
+    // set SQL update statement
+    String sqlInsert = "UPDATE CONTACT " +
+            "SET TITLE = " + "'" + newTitle + "', " +
+            "DATE = " + "'" + newDate + "' " +
+            "WHERE NUM = " + numText.getText().toString();
+
+    // actual query to Database
+    todoDB.execSQL(sqlInsert);
+
+    // Tell whether query succeedd
+    setResult(RESULT_OK);
+    
+    // Finish the Activity
+    finish();
+}
+```
+
+스크롤을 통해, `Year`, `Month`, `Day`의 값을 조정할 수 있으며 `datePicker` 객체의 값을 변경할 수 있습니다.  
+항목의 내용도 바꿀 수 있으며, 최종적으로 sql query를 통해 두 정보를 update 하고 activity를 종료합니다.  
+```
+{
+    SQLiteDatabase todoDB;
+    
+    todoFragment:onResume()
+    {
+        ...
+        todoDB.execSQL(sql_statement);
+        adapter.notifyDataSetChanged();
+        ...
+    }
+}
+```
+모든 sql문 실행 뒤에는, DB synchronization을 위한, RecyclerView adapter의 함수를 실행시켜 주어야 합니다.  
 
 <h2> 4. Extras </h2>
   
