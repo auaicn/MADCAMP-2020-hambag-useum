@@ -175,6 +175,7 @@ public class SingleItem {
                         Log.d("company name : ", website_url);
                     }
 
+                    /*
                     // COMPANY NAME
                     cursor_detail = resolver.query(ContactsContract.Data.CONTENT_URI,
                             projection,
@@ -186,8 +187,13 @@ public class SingleItem {
                     while(cursor_detail.moveToNext()) {
                         String company_name = cursor_detail.getString(cursor_detail.getColumnIndex(ContactsContract.CommonDataKinds.Website.URL));
                         item.setCOMPANY(company_name);
+<<<<<<< HEAD
                         //Log.d("company name : ", company_name);
                     }
+=======
+                        Log.d("company name : ", company_name);
+                    }*/
+>>>>>>> 7be513261cf1d03a46fe724a9ce23dd8154402d2
 
                     // NOTE
                     cursor_detail = resolver.query(ContactsContract.Data.CONTENT_URI,

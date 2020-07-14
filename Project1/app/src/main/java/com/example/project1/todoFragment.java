@@ -1,5 +1,6 @@
 package com.example.project1;
 
+import android.animation.Animator;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -36,6 +37,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
@@ -55,18 +57,14 @@ public class todoFragment extends Fragment {
 
     SQLiteDatabase todoDB;
 
+    TextView totalTodo;
     EditText editTextTitle;
     ImageButton addButton;
     Button dateButton;
 
     DatePickerDialog dialog;
 
-    boolean isEditPageOpen = false;
-    Animation translateLeftAnim;
-    Animation translateRightAnim;
-    LinearLayout editPage;
-    Button editButton;
-    Button cancelButton;
+    InputMethodManager imm;
 
     @Nullable
     @Override
@@ -98,6 +96,8 @@ public class todoFragment extends Fragment {
             }
         }, curYear, curMonth, curDay);
 
+        totalTodo = rootView.findViewById(R.id.totalTodo);
+        totalTodo.setText(numberOfItem() + "개");
         editTextTitle = rootView.findViewById(R.id.editTextTitle);
         addButton = rootView.findViewById(R.id.addButton);
         dateButton = rootView.findViewById(R.id.dateButton);
@@ -111,19 +111,30 @@ public class todoFragment extends Fragment {
             }
         });
 
+        startBlinkingAnim(editTextTitle);
+
+        imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String title = editTextTitle.getText().toString();
                 String date = dateButton.getText().toString();
 
+                if(title.replace(" ", "").equals("")) {
+                    Toast.makeText(getContext(), "title이 비어있어요.", Toast.LENGTH_LONG).show();
+                    return;
+                }
                 int num = numberOfItem();
                 TodoItemView newItem = new TodoItemView(num, title, date, 0);
 
                 insertItem(num, newItem);
                 adapter.notifyDataSetChanged();
+                totalTodo.setText(numberOfItem() + "개");
 
                 editTextTitle.setText("");
+
+                imm.hideSoftInputFromWindow(editTextTitle.getWindowToken(), 0);
             }
         });
 
@@ -134,13 +145,12 @@ public class todoFragment extends Fragment {
     public void onResume() {
         super.onResume();
         adapter.notifyDataSetChanged();
+        totalTodo.setText(numberOfItem() + "개");
     }
 
     public void insertItem(int num, TodoItemView newItem) {
         //Log.d("hamApp todoFragment", "insertItem");
         if(todoDB == null) return;
-
-        //deleteItem(newItem);
 
         String sqlInsert = "INSERT INTO CONTACT " +
                 "(NUM, TITLE, DATE, EMOTION) VALUES (" +
@@ -163,13 +173,6 @@ public class todoFragment extends Fragment {
         return cursor.getCount();
     }
 
-    public void deleteItem(int position) {
-        if(todoDB == null) return;
-
-        String sqlInsert = "DELETE FROM CONTACT " +
-                "WHERE NUM = " + Integer.toString(position);
-        todoDB.execSQL(sqlInsert);
-    }
     /*
     public static class DatePickerDialogTheme extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 
@@ -192,4 +195,9 @@ public class todoFragment extends Fragment {
             return datepickerdialog;
         }
     }*/
+
+    public void startBlinkingAnim(View view) {
+        Animation blinkAnim = AnimationUtils.loadAnimation(getContext(), R.anim.blink);
+        view.startAnimation(blinkAnim);
+    }
 }

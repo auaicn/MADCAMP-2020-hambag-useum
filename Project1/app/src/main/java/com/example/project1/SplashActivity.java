@@ -9,13 +9,14 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-
-import com.example.project1.MainActivity;
 
 public class SplashActivity extends Activity {
 
@@ -31,6 +32,24 @@ public class SplashActivity extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         Log.d("hamApp Splash", "onCreate");
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_splash);
+
+        ImageView emojiView1 = findViewById(R.id.emojiView1);
+        ImageView emojiView2 = findViewById(R.id.emojiView2);
+        ImageView emojiView3 = findViewById(R.id.emojiView3);
+        ImageView emojiView4 = findViewById(R.id.emojiView4);
+        ImageView emojiView5 = findViewById(R.id.emojiView5);
+        ImageView emojiView6 = findViewById(R.id.emojiView6);
+
+        Animation bounce1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.splashbounce1);
+        Animation bounce2 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.splashbounce2);
+        Animation bounce3 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.splashbounce3);
+        emojiView1.startAnimation(bounce1);
+        emojiView2.startAnimation(bounce2);
+        emojiView3.startAnimation(bounce3);
+        emojiView4.startAnimation(bounce1);
+        emojiView5.startAnimation(bounce3);
+        emojiView6.startAnimation(bounce2);
     }
 
     @Override
@@ -58,7 +77,7 @@ public class SplashActivity extends Activity {
                     startActivity(intent);
                     finish();
                 }
-            }, 100);
+            }, 2000);
         }
     }
 
