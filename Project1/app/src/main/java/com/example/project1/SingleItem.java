@@ -98,7 +98,7 @@ public class SingleItem {
                     String data_STARRED = cursor.getString(index_STARRED);
                     String data_CONTACT_ID = cursor.getString(index_CONTACT_ID);
 
-                    Log.d("index data ID : ",data_ID);
+                    Log.d("index data ID : " , data_ID);
 
                     SingleItem item = new SingleItem();
 
@@ -107,7 +107,7 @@ public class SingleItem {
                     item.setSTARRED(data_STARRED);
                     item.setCONTACT_ID(data_CONTACT_ID);
 
-                    // get multiple email address
+                    // get MULTIPLE EMAIL ADDRESS
                     Cursor cursor_detail = resolver.query(ContactsContract.CommonDataKinds.Email.CONTENT_URI,
                             null,
                             ContactsContract.CommonDataKinds.Email.CONTACT_ID + " = ?",
@@ -126,7 +126,7 @@ public class SingleItem {
                     }
 
 
-                    // get phone number
+                    // get PHONE NUMBER
                     cursor_detail = resolver.query(ContactsContract.Data.CONTENT_URI,
                             null,
                             ContactsContract.Data.CONTACT_ID + " = ?"
@@ -147,7 +147,22 @@ public class SingleItem {
                     }
 
 
-                    // get website
+                    // get COMPANY
+                    cursor_detail = resolver.query(ContactsContract.Data.CONTENT_URI,
+                            null,
+                            ContactsContract.Data.CONTACT_ID + " = " + data_ID
+                                    + " and " + ContactsContract.Data.MIMETYPE + " = '" + ContactsContract.CommonDataKinds.Organization.CONTENT_ITEM_TYPE + "'",
+                            null,
+                            null);
+
+                    while(cursor_detail.moveToNext()) {
+                        String copmany_name = cursor_detail.getString(cursor_detail.getColumnIndex(ContactsContract.CommonDataKinds.Organization.COMPANY));
+                        item.setCOMPANY(copmany_name);
+                        //Log.d("company name : ", copmany_name);
+                    }
+
+
+                    // GETTING WEBSITE
                     projection = new String[]{
                             ContactsContract.CommonDataKinds.Website.URL,
                             ContactsContract.CommonDataKinds.Website.TYPE
@@ -170,8 +185,7 @@ public class SingleItem {
                             item.addWEBPAGE(website_url);
                         }
 
-
-                        item.setCOMPANY(website_url);
+                        item.setWEBPAGE(website_url);
                         Log.d("company name : ", website_url);
                     }
 

@@ -1,13 +1,16 @@
 package com.example.project1;
 
 import android.annotation.SuppressLint;
+import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.ImageDecoder;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Message;
 import android.provider.ContactsContract;
 import android.telephony.SmsManager;
 import android.util.Log;
@@ -18,8 +21,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import java.io.InputStream;
 
 public class profile_description extends AppCompatActivity {
 
@@ -41,7 +46,6 @@ public class profile_description extends AppCompatActivity {
 
     private String contact_id;
     private String whether_starred;
-    private Object Message;
 
     public void erase(){
         getContentResolver().delete(
@@ -49,6 +53,14 @@ public class profile_description extends AppCompatActivity {
                 ContactsContract.Data.CONTACT_ID + " = " + contact_id,
                 null);
         finish();
+    }
+
+    @Nullable
+    public Bitmap getContactPhotoThumbnail(Context context, long contactId) {
+        Uri contactUri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, contactId);
+        InputStream is = ContactsContract.Contacts.openContactPhotoInputStream(context.getContentResolver(), contactUri);
+
+        return BitmapFactory.decodeStream(is);
     }
 
     @Override
@@ -98,27 +110,16 @@ public class profile_description extends AppCompatActivity {
         contact_id = parsed_string[8];
         whether_starred = parsed_string[7];
 
-        SmsManager smgr = SmsManager.getDefault();
-        String mobilenumber;
-        smgr.sendDataMessage(mobilenumber,null, Message,null,null);
-
         // Image decoded here.
-        ImageDecoder.Source profile_image_source = null;
-        if (parsed_string[0] != null){
-            Log.d("image setting","has image");
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                profile_image_source = ImageDecoder.createSource(getContentResolver(), Uri.parse(parsed_string[0]));
-                profile_image.setImageURI(Uri.parse(parsed_string[0]));
-            }
-        }
-        else
-            Log.d("image setting","no profile image");
-
+        profile_image = findViewById(R.id.contact_profile_image);
+        profile_image.setImageBitmap(getContactPhotoThumbnail(getApplicationContext(),Integer.parseInt(contact_id)));
 
         // Whether Starred, star-Image right of profile image differs (filled, not filled)
         image_Starred = findViewById(R.id.contact_starred);
         text_ToggleButton_Below = findViewById(R.id.contact_toggle_star_button);
 
+
+        // OnClick 말구, 현재 즐겨찾기인지.
         if(parsed_string[7].equals("1") == true){
             image_Starred.setImageResource(R.drawable.starred_true);
             text_ToggleButton_Below.setText("즐겨찾기에서 제거");
@@ -128,6 +129,9 @@ public class profile_description extends AppCompatActivity {
             text_ToggleButton_Below.setText("+ 즐겨찾기에 추가");
         }
 
+
+
+        // 상단 두개의 버튼.
         // GO BACK to CONTACTS button
         go_back = findViewById(R.id.button_contacts_back);
         go_back.setOnClickListener(new View.OnClickListener(){
@@ -137,18 +141,21 @@ public class profile_description extends AppCompatActivity {
             }
         });
 
-
         // EDIT button
         go_edit = findViewById(R.id.button_change_to_edit_mode);
         go_edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setVisible(true);
 
             }
         });
 
+
+
+
+
         // [Setting] Two Ways to toggle Favorite
+        // 1. BOTTOM TEXT
         Button Star_Top_image = findViewById(R.id.star_button);
         Button Star_bottom = findViewById(R.id.contact_toggle_star_button);
 
@@ -158,10 +165,16 @@ public class profile_description extends AppCompatActivity {
             public void onClick(View view) {
                 ContentValues update_contents = new ContentValues();
 
-                if(whether_starred.equals("1"))
+                String message;
+
+                if(whether_starred.equals("1")) {
+                    message = "unStarred";
                     update_contents.put("starred", "0");
-                else
+                }
+                else {
+                    message = "Starred";
                     update_contents.put("starred", "1");
+                }
 
                 Uri target_uri = ContactsContract.Contacts.CONTENT_URI;
 
@@ -172,17 +185,17 @@ public class profile_description extends AppCompatActivity {
                         ContactsContract.Data._ID + " = ?",
                         new String[]{contact_id});
 
+                Toast.makeText(view.getContext(),
+                        message
+                        ,new Integer(1000)).show();
+
                 // refresh manually.
-                Intent intent = getIntent();
-                // intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                onRestart();
-                // finish();
-                // startActivity(intent);
+                finish();
 
             }
         });
 
-        // Starred Toggle Event
+        // 2. Top Star Image
         Star_Top_image.setOnClickListener(new Button.OnClickListener() {
 
             @Override
@@ -214,16 +227,11 @@ public class profile_description extends AppCompatActivity {
                         ,new Integer(1000)).show();
 
                 // refresh manually.
-                Intent intent = getIntent();
-                onRestart();//?? 되나 이걸로.
-                // finish();
-                // startActivity(intent);
+                finish();
             }
         });
 
-
-
-        // Direction
+        // CALL DIRECTION
         direct_call = findViewById(R.id.dial_button);
         direct_call.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -243,22 +251,27 @@ public class profile_description extends AppCompatActivity {
             }
         });
 
-        EditText message_fragment;
+        // MESSAGE DIRECTION
         direct_message = findViewById(R.id.message_button);
         direct_message.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
                 if(text_NUMBER.getText()==""){
-                    // Toast.makeText(getActivity(),"선택 : " + item.getName(), Toast.LENGTH_LONG).show();
                     Toast.makeText(getApplicationContext(),
                             "전화번호가 없습니다."
                             ,new Integer(1000)).show();
                 }else{
 
-                    //message_fragment
-
                     String message = "보낼 내용";
+                    String target_phone_number = text_NUMBER.getText().toString().split("\n")[0].replaceAll("[a-b,A-Z, ,-]","");
+
+                    Log.d("Target Phone Number",target_phone_number);
+
+                    SmsManager smsManager = SmsManager.getDefault();
+                    smsManager.sendTextMessage(target_phone_number,null, message,null,null);
+
+                    /*
                     Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("smsto:" + text_NUMBER.getText().toString().split("\n")[0]));
 
                     intent.putExtra("sms_body", message );
@@ -266,11 +279,13 @@ public class profile_description extends AppCompatActivity {
                     startActivity(intent);
 
                     startActivity(new Intent("android.intent.action.MESSAGE",Uri.parse(text_NUMBER.getText().toString().split("\n")[0])));
+                    */
                     finish();
                 }
             }
         });
 
+        // EMAIL DIRECTION
         direct_email = findViewById(R.id.email_button);
         direct_email.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -286,56 +301,5 @@ public class profile_description extends AppCompatActivity {
             }
         });
 
-        /*
-        ContentObserver phone_observer;
-        getContentResolver().registerContentObserver(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, true, phone_observer = new ContentObserver(null) {
-            @Override
-            public void onChange(boolean self) {
-                // refresh manually.
-                Intent intent = getIntent();
-                finish();
-                startActivity(intent);
-            }
-        });
-        */
-
-        /*
-        ContentObserver data_observer;
-        getContentResolver().registerContentObserver(ContactsContract.Data.CONTENT_URI, true, data_observer = new ContentObserver(null) {
-            @Override
-            public void onChange(boolean self) {
-                // refresh manually.
-                Intent intent = getIntent();
-                finish();
-                startActivity(intent);
-            }
-        });
-        */
-
-        /*
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-
-                // 여기 position 가지고, 가져올 수 있는 것 같다.
-                SingleItem item = (SingleItem) adapter.getItem(position);
-                String string_item = item.toString();
-                Log.d("to_stringed item",string_item);
-
-                // Toast.makeText(getActivity(),"선택 : " + item.getName(), Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(getActivity(), profile_description.class);
-                Log.d("auaicn","Starting activity succeed");
-
-                if (intent.putExtra("profile_in_detail",string_item) == null)
-                    Log.d("auaicn","intent putting extra failed");
-                else
-                    Log.d("auaicn","intent putting extra succeed");
-                startActivity(intent);
-                Log.d("auaicn","Starting activity succeed");
-            }
-        });
-
-        //text_IS_PRIMARY.setOnClickListener(new OnClickLis);
-        */
     }
-
 }
