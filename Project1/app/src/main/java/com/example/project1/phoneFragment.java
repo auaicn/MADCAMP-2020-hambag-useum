@@ -1,6 +1,7 @@
 package com.example.project1;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,15 +41,17 @@ public class phoneFragment extends Fragment {
         return fragment;
     }
 
+    /*
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        Log.d("hamApp phone", "onCreate");
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-    }
+    }*/
 
     //private List<PhoneBook> phoneBooks;
     private List<SingleItem> loaded_items;
@@ -56,7 +59,7 @@ public class phoneFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
+        Log.d("hamApp phone", "onCreateView");
         // return inflater.inflate(R.layout.fragment_phone, container, false);
         // fragment_phone의 ROOT VIEW type 은 FrameLayout 이던데, ViewGroup 이 관련있는 것 같다.
         ViewGroup view = (ViewGroup) inflater.inflate(R.layout.fragment_phone, container, false);

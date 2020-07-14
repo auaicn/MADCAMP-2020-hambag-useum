@@ -1,6 +1,10 @@
 package com.example.project1;
 
+import android.app.AlertDialog;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -8,197 +12,184 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Locale;
 
 public class todoFragment extends Fragment {
 
-    ListView todoView;
-    List<TodoItem> todo;
+    RecyclerView todoView;
+    RecyclerView.LayoutManager layoutManager;
+
     TodoAdapter adapter;
+
     SQLiteDatabase todoDB;
 
     EditText editTextTitle;
-    EditText editTextDate;
     ImageButton addButton;
+    Button dateButton;
+
+    DatePickerDialog dialog;
+
+    boolean isEditPageOpen = false;
+    Animation translateLeftAnim;
+    Animation translateRightAnim;
+    LinearLayout editPage;
+    Button editButton;
+    Button cancelButton;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        Log.d("hamApp todoFragment", "onCreateView");
+
         final ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_todo, container, false);
-        // final View datePickView = inflater.inflate(R.layout.date_picker, container, false);
-        Log.d("hamApp", "onCreateView_todofragment");
 
-        todoView = (ListView) rootView.findViewById(R.id.todoView);
-        todo = new ArrayList<>();
-        adapter = new TodoAdapter();
+        todoView = (RecyclerView) rootView.findViewById(R.id.todoView);
+        //todoView.setHasFixedSize(true);
 
-        adapter.setDataFromDB(todoDB);
+        layoutManager = new LinearLayoutManager(getContext());
+        todoView.setLayoutManager(layoutManager);
+
+        adapter = new TodoAdapter(getContext(), todoDB);
         todoView.setAdapter(adapter);
-        final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 
-        todoView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        Calendar calendar = new GregorianCalendar();
+        int curYear = calendar.get(Calendar.YEAR);
+        int curMonth = calendar.get(Calendar.MONTH); // 실제 월은 +1
+        int curDay = calendar.get(Calendar.DAY_OF_MONTH);
+
+        dialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Log.d("hamApp", "onItemClick");
-                ((TodoAdapter) todoView.getAdapter()).changeItemCheck(i);
-                todoView.setAdapter(adapter);
+            public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+                // month는 1~12가 아닌 0~11로 되어있다.
+                Toast.makeText(getContext(), i + "/" + (i1+1) + "/" + i2, Toast.LENGTH_SHORT).show();
+                dateButton.setText(i + "/" + (i1+1) + "/" + i2);
             }
-        });
+        }, curYear, curMonth, curDay);
 
         editTextTitle = rootView.findViewById(R.id.editTextTitle);
-        editTextDate = rootView.findViewById(R.id.editTextDate);
         addButton = rootView.findViewById(R.id.addButton);
-
-        Log.d("hamApp", (addButton==null? "null":"not null"));
+        dateButton = rootView.findViewById(R.id.dateButton);
+        dateButton.setText(curYear+ "/" + (curMonth+1) + "/" + curDay);
+        dateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.show();
+                //DialogFragment dialogFragment = new DatePickerDialogTheme();
+                //dialogFragment.show(getFragmentManager(), "Theme");
+            }
+        });
 
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String title = editTextTitle.getText().toString();
-                String date = editTextDate.getText().toString();
+                String date = dateButton.getText().toString();
+
+                int num = numberOfItem();
+                TodoItemView newItem = new TodoItemView(num, title, date, 0);
+
+                insertItem(num, newItem);
+                adapter.notifyDataSetChanged();
 
                 editTextTitle.setText("");
-                editTextDate.setText("");
-
-                insertItem(title, date,false);
-
-                adapter.setDataFromDB(todoDB);
-                todoView.setAdapter(adapter);
-
-                imm.hideSoftInputFromWindow(addButton.getWindowToken(), 0);
             }
         });
 
         return rootView;
     }
 
-    final class TodoAdapter extends BaseAdapter {
-        //List<TodoItem> _todo = new ArrayList<>();
-        SQLiteDatabase todoDB = null;
-
-        void setDataFromDB(SQLiteDatabase DB) {
-            todoDB = DB;
-        }
-
-        void changeItemCheck(int i) {
-            String sqlQueryTbl = "SELECT * FROM CONTACT";
-            Cursor cursor = todoDB.rawQuery(sqlQueryTbl, null);
-
-            for(int j=0; j<=i; j++)
-                cursor.moveToNext();
-
-            String title = cursor.getString(0);
-            changeCheck(title);
-        }
-
-        @Override
-        public int getCount() {
-            // return _todo.size();
-            if(todoDB == null) {
-                Log.d("hamApp", "getCount: 0");
-                return 0;
-            }
-            String sqlQueryTbl = "SELECT * FROM CONTACT";
-            Cursor cursor = todoDB.rawQuery(sqlQueryTbl, null);
-
-            Log.d("hamApp", String.valueOf(cursor.getCount()));
-            return cursor.getCount();
-        }
-
-        @Override
-        public Object getItem(int i) {
-            return null;
-        }
-
-        @Override
-        public long getItemId(int i) {
-            return i;
-        }
-
-        @Override
-        public View getView(int i, View view, ViewGroup viewGroup) {
-
-            String title;
-            String date;
-            int isCheck;
-
-            Log.d("hamApp", "getView");
-
-            TodoItemView itemView;
-
-            if(view == null) {
-                itemView = new TodoItemView(getContext());
-            } else {
-                itemView = (TodoItemView) view;
-            }
-
-            // if(todoDB == null) return null;
-
-            String sqlQueryTbl = "SELECT * FROM CONTACT";
-            Cursor cursor = todoDB.rawQuery(sqlQueryTbl, null);
-
-            for(int j=0; j<=i; j++)
-                cursor.moveToNext();
-
-            //if(!cursor.isAfterLast()) {
-                title = cursor.getString(0);
-                date = cursor.getString(1);
-                isCheck = cursor.getInt(2);
-                itemView.setContents(title, date, (isCheck==1)? true : false);
-            //}
-
-            return itemView;
-        }
+    @Override
+    public void onResume() {
+        super.onResume();
+        adapter.notifyDataSetChanged();
     }
 
-    public void deleteItem(String title) {
+    public void insertItem(int num, TodoItemView newItem) {
+        //Log.d("hamApp todoFragment", "insertItem");
+        if(todoDB == null) return;
+
+        //deleteItem(newItem);
+
+        String sqlInsert = "INSERT INTO CONTACT " +
+                "(NUM, TITLE, DATE, EMOTION) VALUES (" +
+                Integer.toString(num) + ", " +
+                "'" + newItem.getTitle() + "', " +
+                "'" + newItem.getDate() + "', " + "0)";
+
+        //Log.d("hamApp todoFragment", sqlInsert);
+        todoDB.execSQL(sqlInsert);
+
+    }
+
+    public int numberOfItem() {
+        //Log.d("hamApp todoFragment", "numberOfItem");
+        if(todoDB == null) return 0;
+
+        String sqlQueryTbl = "SELECT * FROM CONTACT";
+        Cursor cursor = todoDB.rawQuery(sqlQueryTbl, null);
+
+        return cursor.getCount();
+    }
+
+    public void deleteItem(int position) {
         if(todoDB == null) return;
 
         String sqlInsert = "DELETE FROM CONTACT " +
-                "WHERE TITLE = " +
-                "'" + title + "'";
+                "WHERE NUM = " + Integer.toString(position);
         todoDB.execSQL(sqlInsert);
     }
-    public void insertItem(String title, String date, Boolean done) {
-        if(todoDB == null) return;
+    /*
+    public static class DatePickerDialogTheme extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 
-        deleteItem(title);
+        @Override
+        public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+            dateButton.setText(i + "/" + (i1+1) + "/" + i2);
+        }
 
-        String sqlInsert = "INSERT INTO CONTACT " +
-                "(TITLE, DATE, DONE) VALUES (" +
-                "'" + title + "', " +
-                "'" + date + "', " +
-                (done ? "1" : "0") + ")";
+        @NonNull
+        @Override
+        public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+            Calendar calendar = new GregorianCalendar();
+            int year = calendar.get(Calendar.YEAR);
+            int month = calendar.get(Calendar.MONTH);
+            int day = calendar.get(Calendar.DAY_OF_MONTH);
 
-        System.out.println(sqlInsert);
-        todoDB.execSQL(sqlInsert);
-    }
+            DatePickerDialog datepickerdialog = new DatePickerDialog(getActivity(),
+                    AlertDialog.THEME_DEVICE_DEFAULT_DARK,this,year,month,day);
 
-    public void changeCheck(String title) {
-        if(todoDB == null) return;
-
-        String sqlInsert = "UPDATE CONTACT " +
-                "SET DONE = DONE*(-1)+1 " +
-                "WHERE TITLE = " + "'" + title + "'";
-
-        System.out.println(sqlInsert);
-        todoDB.execSQL(sqlInsert);
-    }
+            return datepickerdialog;
+        }
+    }*/
 }

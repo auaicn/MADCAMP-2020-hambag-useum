@@ -49,11 +49,12 @@ public class photoFragment extends Fragment {
     Button button;
     GridView gridView;
     // PhotoAdapter adapter;
-    int MY_REQUEST_PERMISSIONS = 1234; // 내 임의로 정한 값
+    // int MY_REQUEST_PERMISSIONS = 1234; // 내 임의로 정한 값
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        Log.d("hamApp main", "onCreateView");
         Log.d("hamApp", "onCreateView_photo");
 
         final ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_photo, container, false);
@@ -85,6 +86,7 @@ public class photoFragment extends Fragment {
         return rootView;
     }
 
+    /*
     private static final String[] PERMISSIONS = {
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -120,7 +122,7 @@ public class photoFragment extends Fragment {
                 // recreate();
             }
         }
-    }
+    }*/
 
     private List<String> filesList;
 
@@ -130,15 +132,14 @@ public class photoFragment extends Fragment {
         Log.d("hamApp", "onResume_photo");
         // 기기의 SDK version 체크 (Build.VERSION_CODES.M : Marshmallow)
         // [1] permission이 거부(denied)되어 있는 경우
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && arePermissionsDenied()){
-            requestPermissions(PERMISSIONS, MY_REQUEST_PERMISSIONS);
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && ((MainActivity)getActivity()).arePermissionsDenied()){
+            requestPermissions(((MainActivity)getActivity()).PERMISSIONS, ((MainActivity)getActivity()).MY_REQUEST_PERMISSIONS);
             return;
         }
         // [2] permission이 허용되어 있는 경우
         // app을 initialize 한다.
         filesList = new ArrayList<>();
         addImagesFrom(String.valueOf(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)));
-
 
         //LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         //View view = inflater.inflate(R.layout.fragment_photo, null);

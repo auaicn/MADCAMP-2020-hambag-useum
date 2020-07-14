@@ -4,49 +4,80 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:descendantFocusability="blocksDescendants">
+    android:layout_height="wrap_content"
+    android:descendantFocusability="blocksDescendants"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp">
 
     <LinearLayout
+        android:id="@+id/textField"
         android:layout_width="0dp"
+        android:layout_height="match_parent"
+        app:layout_constraintEnd_toStartOf="@+id/emotionButton"
+        app:layout_constraintStart_toStartOf="parent">
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/checkBox"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp">
 
         <TextView
+            android:id="@+id/num"
+            android:layout_width="17dp"
+            android:layout_height="wrap_content"
+            android:text="00"
+            android:textSize="10sp"
+            android:textColor="#D3D3D3"
+            android:layout_marginRight="3dp"
+            android:layout_marginTop="5dp"
+            android:layout_gravity="top"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <TextView
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:maxLines="1"
-            android:padding="5dp"
-            android:text="공통주제 1 과제 완성하기"
+            android:text="title"
             android:textColor="#3E3E3E"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="8dp"
-            android:paddingBottom="5dp"
-            android:text="2020/07/10"
-            android:textColor="@android:color/holo_blue_dark" />
+            <TextView
+                android:id="@+id/date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0000/00/00"
+                android:textColor="@android:color/holo_blue_dark"
+                android:textSize="15sp"/>
+        </LinearLayout>
+
+    </LinearLayout>
     </LinearLayout>
 
-
-    <CheckBox
-        android:id="@+id/checkBox"
+    <ImageButton
+        android:id="@+id/emotionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:button="@drawable/ic_uncheck"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:clickable="false"/>
+        android:background="#00000000"
+        android:clickable="true"/>
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:background="#E6E6E6"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textField" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

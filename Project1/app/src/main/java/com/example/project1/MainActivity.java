@@ -2,12 +2,14 @@ package com.example.project1;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
@@ -22,9 +24,12 @@ import android.view.ViewTreeObserver;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -50,10 +55,20 @@ public class MainActivity extends AppCompatActivity {
     private photoFragment photoFragment;
     private todoFragment todoFragment;
 
+    int MY_REQUEST_PERMISSIONS;
+    public static String[] PERMISSIONS = new String[4];
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        Log.d("hamApp main", "onCreate");
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Intent intent = getIntent();
+        MY_REQUEST_PERMISSIONS = intent.getExtras().getInt("myPermissionCode");
+        PERMISSIONS = intent.getExtras().getStringArray("permissionList");
 
         toolbar = findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
@@ -74,15 +89,6 @@ public class MainActivity extends AppCompatActivity {
 
         todoFragment.todoDB = init_database("todoList.db");
         init_tables(todoFragment.todoDB, "CONTACT");
-
-        constraintLayout = findViewById(R.id.constraintLayout);
-        constraintLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                int screenHeight = constraintLayout.getRootView().getMeasuredHeight();
-                Log.d("hamApp", Integer.toString(screenHeight));
-            }
-        });
     }
 
     private class ViewPagerAdapter extends FragmentPagerAdapter {
@@ -139,10 +145,41 @@ public class MainActivity extends AppCompatActivity {
         if(sqliteDB == null) return;
 
         String sqlCreateTbl = "CREATE TABLE IF NOT EXISTS "+ tableName + " (" +
-                "TITLE "       + "TEXT NOT NULL," +
-                "DATE "     + "TEXT," +
-                "DONE "   + "INTEGER" + ")";
+                "NUM "      + "INTEGER NOT NULL," +
+                "TITLE "    + "STRING NOT NULL," +
+                "DATE "     + "STRING NOT NULL," +
+                "EMOTION "  + "INTEGER NOT NULL" + ")";
         System.out.println(sqlCreateTbl);
         sqliteDB.execSQL(sqlCreateTbl);
+    }
+
+    public boolean arePermissionsDenied() {
+
+        Log.d("hamApp main", "arePermissionsDenied");
+
+        for (int i = 0; i < 4; i++) {
+            // 4개의 요청사항 중 하나라도 허용하지 않은 상태일 경우
+            // fragment에서는 this 대신 getContext()
+            if (ContextCompat.checkSelfPermission(this, PERMISSIONS[i]) != PackageManager.PERMISSION_GRANTED) {
+                return true;
+            }
+        }
+        // 4개 요청사항이 모두 허용된 경우
+        return false;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d("hamApp", "onActivityResult");
+        String code = data.getStringExtra("code");
+        Toast.makeText(getApplicationContext(), code, Toast.LENGTH_SHORT).show();
+        if(code.equals("edit")) {
+            Toast.makeText(getApplicationContext(), "edit", Toast.LENGTH_SHORT).show();
+        }
+        else if(code.equals("delete")) {
+            Toast.makeText(getApplicationContext(), "delete", Toast.LENGTH_SHORT).show();
+        }
+
     }
 }
