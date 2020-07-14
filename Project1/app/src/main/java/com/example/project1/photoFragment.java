@@ -1,30 +1,22 @@
 package com.example.project1;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.ActivityManager;
-import android.content.Context;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.graphics.Point;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.Display;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowMetrics;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -38,7 +30,6 @@ import com.bumptech.glide.Glide;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import static android.content.Context.ACTIVITY_SERVICE;
 
@@ -68,7 +59,6 @@ public class photoFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Log.d("hamApp", "onItemClick1");
                 Glide.with(getActivity()).load(gridView.getAdapter().getItem(i)).into(selectedView);
-
                 fullPhoto.setVisibility(View.VISIBLE);
                 gridView.setVisibility(View.INVISIBLE);
             }
@@ -134,11 +124,11 @@ public class photoFragment extends Fragment {
             requestPermissions(PERMISSIONS, MY_REQUEST_PERMISSIONS);
             return;
         }
+
         // [2] permission이 허용되어 있는 경우
         // app을 initialize 한다.
         filesList = new ArrayList<>();
         addImagesFrom(String.valueOf(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)));
-
 
         //LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         //View view = inflater.inflate(R.layout.fragment_photo, null);

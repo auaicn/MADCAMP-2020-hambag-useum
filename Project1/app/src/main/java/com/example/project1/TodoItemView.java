@@ -3,7 +3,6 @@ package com.example.project1;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.widget.CheckBox;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -26,7 +25,6 @@ public class TodoItemView extends ConstraintLayout {
         title = (TextView) findViewById(R.id.title);
         date = (TextView) findViewById(R.id.date);
         checkBox = (CheckBox) findViewById(R.id.checkBox);
-
     }
 
     public void setContents(String title, String date, Boolean check) {

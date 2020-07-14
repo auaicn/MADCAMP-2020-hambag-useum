@@ -2,15 +2,19 @@ package com.example.project1;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import java.util.ArrayList;
@@ -19,6 +23,7 @@ import java.util.List;
 public class phoneFragment extends Fragment {
 
     private ListView listView;
+    private Button button;
     private phoneFragment.ContactAdapter adapter;
 
     public static phoneFragment newInstance(String param1, String param2) {
@@ -31,11 +36,73 @@ public class phoneFragment extends Fragment {
     private List<SingleItem> loaded_items;
 
     @Override
+    public void onResume() {
+
+        // View Group
+        super.onResume();
+        listView = (ListView) getView().findViewById(R.id.contact_list_view);
+
+        // Contact APP 에 접근해서, 연락처 정보를 쿼리를 통해 LIST 형태로 가져온다.
+        loaded_items = SingleItem.getContacts(getActivity());
+        System.out.println(loaded_items.size() + " elements loaded by getContacts()"); // debugging.
+
+        // Custom adapter Object 생성
+        adapter = new ContactAdapter();
+        Bundle bundle;
+
+        // Custom adapter Object 에 load한 연락처 아이템 하나하나를 추가해준다.
+        // addItem() on class "SingleItem" which is sub-class of current class.
+        for (int i = 0; i < loaded_items.size(); i++) {
+            System.out.println(loaded_items.get(i));
+            adapter.addItem(new SingleItem(
+                    loaded_items.get(i).getPHOTO_URI(),
+                    loaded_items.get(i).getDISPLAY_NAME(),
+                    loaded_items.get(i).getCOMPANY(),
+                    loaded_items.get(i).getNUMBER(),
+                    loaded_items.get(i).getADDRESS(),
+                    loaded_items.get(i).getWEBPAGE(),
+                    loaded_items.get(i).getNOTE(),
+                    loaded_items.get(i).getSTARRED(),
+                    loaded_items.get(i).getCONTACT_ID()));
+        }
+
+        // Object 의 추가가 완료되면, adapter 를 설정해준다.
+        listView.setAdapter(adapter);
+
+    }
+
+    @Nullable
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        // View Group
         ViewGroup view = (ViewGroup) inflater.inflate(R.layout.fragment_phone, container, false);
+
+        // SEARCH
+        EditText editText = null;
+        editText = (EditText) view.findViewById(R.id.contact_search);
+
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(charSequence == null){
+
+                }
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+        // LIST VIEW
+
         listView = (ListView) view.findViewById(R.id.contact_list_view);
 
         // Contact APP 에 접근해서, 연락처 정보를 쿼리를 통해 LIST 형태로 가져온다.
@@ -46,10 +113,9 @@ public class phoneFragment extends Fragment {
         adapter = new ContactAdapter();
         Bundle bundle;
 
-
         // Custom adapter Object 에 load한 연락처 아이템 하나하나를 추가해준다.
         // addItem() on class "SingleItem" which is sub-class of current class.
-        for (int i=0;i<loaded_items.size();i++) {
+        for (int i = 0; i < loaded_items.size(); i++) {
             System.out.println(loaded_items.get(i));
             adapter.addItem(new SingleItem(
                     loaded_items.get(i).getPHOTO_URI(),
@@ -57,10 +123,12 @@ public class phoneFragment extends Fragment {
                     loaded_items.get(i).getCOMPANY(),
                     loaded_items.get(i).getNUMBER(),
                     loaded_items.get(i).getADDRESS(),
-                    loaded_items.get(i).getURL(),
+                    loaded_items.get(i).getWEBPAGE(),
                     loaded_items.get(i).getNOTE(),
-                    loaded_items.get(i).getIS_PRIMARY()));
+                    loaded_items.get(i).getSTARRED(),
+                    loaded_items.get(i).getCONTACT_ID()));
         }
+
         // Object 의 추가가 완료되면, adapter 를 설정해준다.
         listView.setAdapter(adapter);
 
@@ -69,22 +137,51 @@ public class phoneFragment extends Fragment {
         // list 자체가 눌리는 이벤트를 처리해주는 함수는 setOnClickListener 이다.
         // 우선순위는 list 자체가 눌리는 이벤트가 우선인 것 같다. 그래서 정의해주지 않았다.
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
 
+                // 여기 position 가지고, 가져올 수 있는 것 같다.
                 SingleItem item = (SingleItem) adapter.getItem(position);
+                String string_item = item.toString();
+                Log.d("to_stringed item",string_item);
+
                 // Toast.makeText(getActivity(),"선택 : " + item.getName(), Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(getActivity(), profile_description.class);
+
                 Log.d("auaicn","Starting activity succeed");
-                intent.putExtras(bundle);
-                if (intent.putExtra("profile_in_detail",bundle) == null)
+
+                if (intent.putExtra("profile_in_detail",string_item) == null)
                     Log.d("auaicn","intent putting extra failed");
                 else
                     Log.d("auaicn","intent putting extra succeed");
+
                 startActivity(intent);
                 Log.d("auaicn","Starting activity succeed");
             }
         });
+
+        /*
+        // Swipe Delete Implementation
+
+        TextView contact_item_text_view = (TextView) getActivity().findViewById(R.id.contact_item_text);
+
+        contact_item_text_view.setOnTouchListener(new OnSwipeTouchListener(getActivity()) {
+            public void onSwipeTop() {
+                Toast.makeText(getActivity(), "top", Toast.LENGTH_SHORT).show();
+            }
+            public void onSwipeRight() {
+                Toast.makeText(getActivity(), "right", Toast.LENGTH_SHORT).show();
+            }
+            public void onSwipeLeft() {
+                Toast.makeText(getActivity(), "left", Toast.LENGTH_SHORT).show();
+            }
+            public void onSwipeBottom() {
+                Toast.makeText(getActivity(), "bottom", Toast.LENGTH_SHORT).show();
+            }
+
+        });
+        */
 
         return view;
     }
@@ -113,7 +210,7 @@ public class phoneFragment extends Fragment {
 
         ArrayList<SingleItem> items = new ArrayList<SingleItem>();
 
-       public void addItem(SingleItem item){
+        public void addItem(SingleItem item){
            items.add(item);
        }
 
@@ -122,7 +219,23 @@ public class phoneFragment extends Fragment {
             SingleItemView view = new SingleItemView(getActivity());
 
             SingleItem item = items.get(position);
-            view.setContact_name(item.getDISPLAY_NAME());
+            String profile_name = item.getDISPLAY_NAME();
+
+            if(item.getSTARRED().equals("1") ){
+                if(position == 0)
+                    view.getClassifier().setText("Favorites");
+                else
+                    view.getClassifier().setTextSize(0);
+            }else {
+                if (profile_name.charAt(0) == view.getLast_character()) {
+                    view.getClassifier().setTextSize(0);
+                } else {
+                    view.getClassifier().setText(profile_name.substring(0, 1));
+                }
+                view.setLast_character(profile_name.charAt(0));
+            }
+
+            view.getContact_name().setText(profile_name);
 
             return view;
         }

@@ -8,7 +8,33 @@ import android.widget.TextView;
 
 public class SingleItemView extends RelativeLayout {
 
+    TextView classifier;
     TextView contact_name;
+    public static char last_character;
+
+    public TextView getClassifier() {
+        return classifier;
+    }
+
+    public void setClassifier(TextView classifier) {
+        this.classifier = classifier;
+    }
+
+    public TextView getContact_name() {
+        return contact_name;
+    }
+
+    public void setContact_name(TextView contact_name) {
+        this.contact_name = contact_name;
+    }
+
+    public static char getLast_character() {
+        return last_character;
+    }
+
+    public static void setLast_character(char last_character) {
+        SingleItemView.last_character = last_character;
+    }
 
     public SingleItemView(Context context) {
         super(context);
@@ -27,16 +53,9 @@ public class SingleItemView extends RelativeLayout {
 
         // item 이라고 해서, 하나의 뷰를 xml로 정의할 수 있지만,
         // 연락처 탭에서 필요한건 이름만으로 구성하였다. 전화번호는 onclick 후 세부사항에서 확인 할 수 있다.
-        contact_name = (TextView) findViewById(R.id.contact_item);
+        classifier  = (TextView) findViewById(R.id.contact_item_classifier);
+        contact_name = (TextView) findViewById(R.id.contact_item_text);
 
-    }
-
-    public TextView getContact_name() {
-        return contact_name;
-    }
-
-    public void setContact_name(String contact_name_) {
-        contact_name.setText(contact_name_);
     }
 
 }

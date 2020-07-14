@@ -2,6 +2,7 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
@@ -78,14 +79,28 @@
         android:textSize="26sp"
         android:layout_centerInParent="true" />
 
-    <ImageView
+    <FrameLayout
+
         android:layout_toRightOf="@id/contact_full_name"
         android:layout_below="@id/contact_profile_image"
         android:layout_marginTop="8dp"
         android:layout_marginLeft="4dp"
         android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:src="@drawable/star_not"/>
+        android:layout_height="20dp">
+
+        <ImageView
+            android:id="@+id/contact_starred"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:src="@drawable/starred_false" />
+
+        <Button
+            android:id="@+id/star_button"
+            android:background="@android:color/transparent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </FrameLayout>
 
     <TextView android:id="@+id/contact_company"
         android:layout_width="match_parent"
@@ -99,31 +114,28 @@
         android:textSize="20sp"
         android:layout_height="wrap_content"/>
 
-
     <TextView android:id="@+id/contact_description_bottom"
         android:layout_width="match_parent"
         android:layout_below="@id/contact_description_middle"
         android:layout_centerInParent="true"
         android:layout_height="match_parent"/>
 
-
     <LinearLayout
         android:id="@+id/bottom_contents"
         android:layout_width="match_parent"
+        android:isScrollContainer="true"
         android:layout_height="match_parent"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="10dp"
-
+        android:scrollbarSize="20dp"
         android:layout_below="@id/contact_company"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_above="@id/bottom_contents"
+        <TextView android:layout_above="@id/bottom_contents"
             android:layout_marginVertical="6dp"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="#CDCDCD" />
-
 
         <TextView
             android:layout_width="match_parent"
@@ -134,8 +146,9 @@
 
         <TextView android:id="@+id/contact_phone_number"
             android:layout_width="match_parent"
-            android:layout_height="20dp"
+            android:layout_height="wrap_content"
             android:textColor="#0000FF"
+            android:maxLines="10"
             android:fontFamily="@font/montserrat_light"
             android:textStyle="bold"
             android:text="+82 10-8506-4538"
@@ -156,7 +169,10 @@
 
         <TextView android:id="@+id/contact_email_address"
             android:layout_width="match_parent"
-            android:layout_height="20dp"
+            android:layout_height="wrap_content"
+            android:maxLines="10"
+            android:lineSpacingExtra="2dp"
+            android:singleLine="false"
             android:textColor="#0000FF"
             android:fontFamily="@font/montserrat_regular"
             android:text="crorowslowpp@gmail.com"
@@ -177,7 +193,9 @@
 
         <TextView android:id="@+id/contact_homepage"
             android:layout_width="match_parent"
-            android:layout_height="20dp"
+            android:layout_height="wrap_content"
+            android:singleLine="false"
+            android:maxLines="10"
             android:textColor="#0000FF"
             android:fontFamily="@font/montserrat_regular"
             android:text="https://github.com/auaicn/common_assignment"
@@ -196,14 +214,15 @@
             android:textColor="#000000"
             android:textSize="14sp" />
 
-        <TextView android:id="@+id/Notes"
+        <TextView android:id="@+id/contact_notes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
             android:textColor="#000000"
             android:fontFamily="@font/montserrat_regular"
+            android:minHeight="60dp"
             android:lineSpacingExtra="2sp"
-            android:text="Notes1\nNotes@gmail.com\nLike Singing\nNever been to Australia"
+            android:text="Notes1tralia"
             android:textSize="12sp" />
 
         <TextView
@@ -223,11 +242,5 @@
             android:textColor="#000000"
             android:textSize="14sp" />
 
-
-
-
     </LinearLayout>
-
-    \
-
 </RelativeLayout>

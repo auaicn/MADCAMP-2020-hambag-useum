@@ -25,7 +25,6 @@
         android:background="@drawable/layout_bg"/>
 
     <ImageView android:id="@+id/search_glass_img"
-
         android:src="@drawable/search_glass"
 
         android:layout_below="@id/contact_title"
@@ -37,7 +36,6 @@
         android:layout_marginLeft="25dp" />
 
     <EditText android:id="@+id/contact_search"
-
         android:layout_below="@id/contact_title"
         android:layout_toRightOf="@id/search_glass_img"
         android:layout_width="match_parent"

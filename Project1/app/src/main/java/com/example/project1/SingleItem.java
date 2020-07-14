@@ -17,31 +17,50 @@ public class SingleItem {
     private String COMPANY;
     private String NUMBER;
     private String ADDRESS;
-    private String URL;
+    private String WEBPAGE;
     private String NOTE;
-    private String IS_PRIMARY;
+    private String STARRED;
+    private String CONTACT_ID;
+
+    private final String new_line = "\n";
+    private final String own_delimiter = "__";
+
+
+    public SingleItem() {
+        this.PHOTO_URI = "";
+        this.DISPLAY_NAME = "";
+        this.COMPANY = "";
+        this.NUMBER = "";
+        this.ADDRESS = "";
+        this.WEBPAGE = "";
+        this.NOTE = "";
+        this.STARRED = "";
+        this.CONTACT_ID = "";
+    }
 
     @Override
     public String toString() {
-        return  "PHOTO_URI='" + PHOTO_URI + "\n" +
-                "DISPLAY_NAME='" + DISPLAY_NAME + "\n" +
-                "COMPANY='" + COMPANY + "\n" +
-                "NUMBER='" + NUMBER + "\n" +
-                "ADDRESS='" + ADDRESS + "\n" +
-                "URL='" + URL + "\n" +
-                "NOTE='" + NOTE + "\n" +
-                "IS_PRIMARY='" + IS_PRIMARY + "\n" ;
+        return  PHOTO_URI + own_delimiter +
+                DISPLAY_NAME + own_delimiter +
+                COMPANY + own_delimiter +
+                NUMBER + own_delimiter +
+                ADDRESS + own_delimiter +
+                WEBPAGE + own_delimiter +
+                NOTE + own_delimiter +
+                STARRED + own_delimiter +
+                CONTACT_ID + own_delimiter;
     }
 
-    public SingleItem(String PHOTO_URI, String DISPLAY_NAME, String COMPANY, String NUMBER, String ADDRESS, String URL, String NOTE, String IS_PRIMARY) {
+    public SingleItem(String PHOTO_URI, String DISPLAY_NAME, String COMPANY, String NUMBER, String ADDRESS, String WEBPAGE, String NOTE, String STARRED, String CONTACT_ID) {
         this.PHOTO_URI = PHOTO_URI;
         this.DISPLAY_NAME = DISPLAY_NAME;
         this.COMPANY = COMPANY;
         this.NUMBER = NUMBER;
         this.ADDRESS = ADDRESS;
-        this.URL = URL;
+        this.WEBPAGE = WEBPAGE;
         this.NOTE = NOTE;
-        this.IS_PRIMARY = IS_PRIMARY;
+        this.STARRED = STARRED;
+        this.CONTACT_ID = CONTACT_ID;
     }
 
     public static List<SingleItem> getContacts(Context context) {
@@ -53,69 +72,142 @@ public class SingleItem {
         // resolver is context-specific.
         ContentResolver resolver = context.getContentResolver();
 
-        // query setting we have to set  5 arguments
+        Uri contact_application_uri = ContactsContract.Contacts.CONTENT_URI; Log.d("URI",contact_application_uri.toString());
+        String[] projection = null;
+        String selection = null;
+        String selectionArgs = null;
+        String sortOrder = "starred DESC, display_name ASC";
 
-        Uri contact_application_uri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
-
-        String[] projection = {
-                ContactsContract.CommonDataKinds.Phone.PHOTO_URI,
-                ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
-                ContactsContract.CommonDataKinds.Organization.COMPANY,
-                ContactsContract.CommonDataKinds.Phone.NUMBER,
-                ContactsContract.CommonDataKinds.Email.ADDRESS,
-                ContactsContract.CommonDataKinds.Website.URL,
-                ContactsContract.CommonDataKinds.Note.NOTE,
-                ContactsContract.CommonDataKinds.Phone.IS_PRIMARY
-        };
-
-        String selectionClause = null;
-        String[] selectionArgs = {""};
-        String sortOrder = "IS_PRIMARY DESC DISPLAY_NAME ASC";
-
-        for (int i = 0; i < projection.length; i++)
-            Log.d("auaicn", i + " : " + projection[i]);
-
-        // resolver to application_specific_provider query.
-        Cursor cursor = resolver.query(contact_application_uri, projection, null, null, null);
-        Log.d("auaicn", "number of items read is " + cursor.getCount());
+        Cursor cursor = resolver.query(contact_application_uri, null, null, null, sortOrder); Log.d("auaicn", "number of items read is " + cursor.getCount());
 
         ArrayList<SingleItem> items = new ArrayList<SingleItem>();
+
         if (cursor != null) {
 
             if (cursor.getCount() > 0) {
                 while (cursor.moveToNext()) {
 
-                    // load 8 elements
+                    int index_ID = cursor.getColumnIndex(ContactsContract.Contacts._ID);
+                    int index_PHOTO_URI = cursor.getColumnIndex(ContactsContract.Contacts.PHOTO_URI);
+                    int index_DISPLAY_NAME = cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME);
+                    int index_STARRED = cursor.getColumnIndex(ContactsContract.Contacts.STARRED);
+                    int index_CONTACT_ID = cursor.getColumnIndex(ContactsContract.Contacts._ID);
 
-                    int index_PHOTO_URI = cursor.getColumnIndex(projection[0]);
-                    int index_DISPLAY_NAME = cursor.getColumnIndex(projection[1]);
-                    int index_COMPANY = cursor.getColumnIndex(projection[2]);
-                    int index_NUMBER = cursor.getColumnIndex(projection[3]);
-                    int index_ADDRESS = cursor.getColumnIndex(projection[4]);
-                    int index_URL = cursor.getColumnIndex(projection[5]);
-                    int index_NOTE = cursor.getColumnIndex(projection[6]);
-                    int index_IS_PRIMARY = cursor.getColumnIndex(projection[7]);
-
+                    String data_ID = cursor.getString(index_ID);
                     String data_PHOTO_URI = cursor.getString(index_PHOTO_URI);
                     String data_DISPLAY_NAME = cursor.getString(index_DISPLAY_NAME);
-                    String data_COMPANY = cursor.getString(index_COMPANY);
-                    String data_NUMBER = cursor.getString(index_NUMBER);
-                    String data_ADDRESS = cursor.getString(index_ADDRESS);
-                    String data_URL = cursor.getString(index_URL);
-                    String data_NOTE = cursor.getString(index_NOTE);
-                    String data_IS_PRIMARY = cursor.getString(index_IS_PRIMARY);
+                    String data_STARRED = cursor.getString(index_STARRED);
+                    String data_CONTACT_ID = cursor.getString(index_CONTACT_ID);
 
-                    items.add(new SingleItem(
-                            data_PHOTO_URI,
-                            data_DISPLAY_NAME,
-                            data_COMPANY,
-                            data_NUMBER,
-                            data_ADDRESS,
-                            data_URL,
-                            data_NOTE,
-                            data_IS_PRIMARY));
+                    Log.d("index data ID : ",data_ID);
+
+                    SingleItem item = new SingleItem();
+
+                    item.setPHOTO_URI(data_PHOTO_URI);
+                    item.setDISPLAY_NAME(data_DISPLAY_NAME);
+                    item.setSTARRED(data_STARRED);
+                    item.setCONTACT_ID(data_CONTACT_ID);
+
+                    // get multiple email address
+                    Cursor cursor_detail = resolver.query(ContactsContract.CommonDataKinds.Email.CONTENT_URI,
+                            null,
+                            ContactsContract.CommonDataKinds.Email.CONTACT_ID + " = ?",
+                            new String[]{data_ID},
+                            null);
+
+                    Log.d("see if equal",data_CONTACT_ID + " & " + ContactsContract.CommonDataKinds.Email.CONTACT_ID);
+
+                    while(cursor_detail.moveToNext()) {
+                        String email = cursor_detail.getString(cursor_detail.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA));
+                        if(item.getADDRESS() == "")
+                            item.setADDRESS(email);
+                        else
+                            item.addADDRESS(email);
+                        Log.d("email address : ", email);
+                    }
+
+
+                    // get phone number
+                    cursor_detail = resolver.query(ContactsContract.Data.CONTENT_URI,
+                            null,
+                            ContactsContract.Data.CONTACT_ID + " = ?"
+                                    + " and " + ContactsContract.Data.MIMETYPE + " = '" + ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE + "'",
+                            new String[]{data_ID},
+                            null);
+
+                    while(cursor_detail.moveToNext()) {
+                        String phone_number = cursor_detail.getString(cursor_detail.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                        if(item.getNUMBER() == "") {
+                            Log.d("auaicn","first phone number add");
+                            item.setNUMBER(phone_number);
+                        } else {
+                            Log.d("auaicn","additional phone number add");
+                            item.addNumber(phone_number);
+                        }
+                        Log.d("phone number : ", phone_number);
+                    }
+
+
+                    // get website
+                    projection = new String[]{
+                            ContactsContract.CommonDataKinds.Website.URL,
+                            ContactsContract.CommonDataKinds.Website.TYPE
+                    };
+
+                    cursor_detail = resolver.query(ContactsContract.Data.CONTENT_URI,
+                            projection,
+                            ContactsContract.Data.CONTACT_ID + " = " + data_ID
+                                    + " and " + ContactsContract.Data.MIMETYPE + " = '" + ContactsContract.CommonDataKinds.Website.CONTENT_ITEM_TYPE + "'",
+                            null,
+                            null);
+
+                    while(cursor_detail.moveToNext()) {
+                        String website_url = cursor_detail.getString(cursor_detail.getColumnIndex(ContactsContract.CommonDataKinds.Website.URL));
+                        if (item.getWEBPAGE() == ""){
+                            Log.d("auaicn","first webpage add");
+                            item.setWEBPAGE(website_url);
+                        }else{
+                            Log.d("auaicn","additional webpage add");
+                            item.addWEBPAGE(website_url);
+                        }
+
+
+                        item.setCOMPANY(website_url);
+                        Log.d("company name : ", website_url);
+                    }
+
+                    // COMPANY NAME
+                    cursor_detail = resolver.query(ContactsContract.Data.CONTENT_URI,
+                            projection,
+                            ContactsContract.Data.CONTACT_ID + " = " + data_ID
+                                    + " and " + ContactsContract.Data.MIMETYPE + " = '" + ContactsContract.CommonDataKinds.Organization.CONTENT_ITEM_TYPE + "'",
+                            null,
+                            null);
+
+                    while(cursor_detail.moveToNext()) {
+                        String company_name = cursor_detail.getString(cursor_detail.getColumnIndex(ContactsContract.CommonDataKinds.Website.URL));
+                        item.setCOMPANY(company_name);
+                        Log.d("company name : ", company_name);
+                    }
+
+                    // NOTE
+                    cursor_detail = resolver.query(ContactsContract.Data.CONTENT_URI,
+                            projection,
+                            ContactsContract.Data.CONTACT_ID + " = " + data_ID
+                                    + " and " + ContactsContract.Data.MIMETYPE + " = '" + ContactsContract.CommonDataKinds.Note.CONTENT_ITEM_TYPE + "'",
+                            null,
+                            null);
+
+                    while(cursor_detail.moveToNext()) {
+                        String Notes_contents = cursor_detail.getString(cursor_detail.getColumnIndex(ContactsContract.CommonDataKinds.Website.URL));
+                        item.setNOTE(Notes_contents);
+                        Log.d("company name : ", Notes_contents);
+                    }
+
+                    cursor_detail.close();
+                    items.add(item);
+
                 }
-
             } else {
 
                 // nothing found for query
@@ -134,71 +226,55 @@ public class SingleItem {
         for (int i = 0; i < items.size(); i++)
             data.add(items.get(i));
 
-        // 데이터 계열은 반드시 닫아줘야 한다.
         cursor.close();
         return data;
     }
-    public String getPHOTO_URI () {
-        return PHOTO_URI;
+
+    private void addNumber(String phone_number) { setNUMBER(getNUMBER() + new_line + phone_number); }
+
+    private void addADDRESS(String email) {
+        setADDRESS(getADDRESS() + new_line + email);
     }
 
-    public void setPHOTO_URI (String PHOTO_URI){
-        this.PHOTO_URI = PHOTO_URI;
+    private void addWEBPAGE(String WEBPAGE) {
+        setWEBPAGE(getWEBPAGE() + new_line + WEBPAGE);
     }
 
-    public String getDISPLAY_NAME () {
-        return DISPLAY_NAME;
-    }
+    public String getPHOTO_URI () { return PHOTO_URI; }
 
-    public void setDISPLAY_NAME (String DISPLAY_NAME){
-        this.DISPLAY_NAME = DISPLAY_NAME;
-    }
+    public void setPHOTO_URI (String PHOTO_URI){ this.PHOTO_URI = PHOTO_URI; }
 
-    public String getCOMPANY () {
-        return COMPANY;
-    }
+    public String getDISPLAY_NAME () { return DISPLAY_NAME; }
 
-    public void setCOMPANY (String COMPANY){
-        this.COMPANY = COMPANY;
-    }
+    public void setDISPLAY_NAME (String DISPLAY_NAME){ this.DISPLAY_NAME = DISPLAY_NAME; }
 
-    public String getNUMBER () {
-        return NUMBER;
-    }
+    public String getCOMPANY () { return COMPANY; }
 
-    public void setNUMBER (String NUMBER){
-        this.NUMBER = NUMBER;
-    }
+    public void setCOMPANY (String COMPANY){ this.COMPANY = COMPANY; }
 
-    public String getADDRESS () {
-        return ADDRESS;
-    }
+    public String getNUMBER () { return NUMBER; }
 
-    public void setADDRESS (String ADDRESS){
-        this.ADDRESS = ADDRESS;
-    }
+    public void setNUMBER (String NUMBER){ this.NUMBER = NUMBER; }
 
-    public String getURL () {
-        return URL;
-    }
+    public String getADDRESS () { return ADDRESS; }
 
-    public void setURL (String URL){
-        this.URL = URL;
-    }
+    public void setADDRESS (String ADDRESS){ this.ADDRESS = ADDRESS; }
 
-    public String getNOTE () {
-        return NOTE;
-    }
+    public String getWEBPAGE () { return WEBPAGE; }
 
-    public void setNOTE (String NOTE){
-        this.NOTE = NOTE;
-    }
+    public void setWEBPAGE (String WEBPAGE){ this.WEBPAGE = WEBPAGE; }
 
-    public String getIS_PRIMARY () {
-        return IS_PRIMARY;
-    }
+    public String getNOTE () { return NOTE; }
 
-    public void setIS_PRIMARY (String IS_PRIMARY){
-        this.IS_PRIMARY = IS_PRIMARY;
-    }
+    public void setNOTE (String NOTE){ this.NOTE = NOTE; }
+
+    public String getSTARRED () { return STARRED; }
+
+    public void setSTARRED (String STARRED){ this.STARRED = STARRED; }
+
+    public String getCONTACT_ID() { return CONTACT_ID; }
+
+    public void setCONTACT_ID(String CONTACT_ID) { this.CONTACT_ID = CONTACT_ID; }
+
+
 }
