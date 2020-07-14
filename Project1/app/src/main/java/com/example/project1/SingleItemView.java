@@ -3,16 +3,12 @@ package com.example.project1;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class SingleItemView extends LinearLayout {
+public class SingleItemView extends RelativeLayout {
 
-    TextView text1;
-    TextView text2;
-    TextView text3;
-    ImageView imageview;
+    TextView contact_name;
 
     public SingleItemView(Context context) {
         super(context);
@@ -27,29 +23,20 @@ public class SingleItemView extends LinearLayout {
     public void init(Context context){
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        inflater.inflate(R.layout.contact_layout,this,true);
+        inflater.inflate(R.layout.contact_item,this,true);
 
-        text1 = (TextView) findViewById(R.id.text1);
-        text2 = (TextView) findViewById(R.id.text2);
-        text3 = (TextView) findViewById(R.id.text3);
-        imageview = (ImageView) findViewById(R.id.profile);
+        // item 이라고 해서, 하나의 뷰를 xml로 정의할 수 있지만,
+        // 연락처 탭에서 필요한건 이름만으로 구성하였다. 전화번호는 onclick 후 세부사항에서 확인 할 수 있다.
+        contact_name = (TextView) findViewById(R.id.contact_item);
 
     }
 
-    public void setText1(String name) {
-        text1.setText(name);
+    public TextView getContact_name() {
+        return contact_name;
     }
 
-    public void setText2(String mobile) {
-        text2.setText(mobile);
-    }
-
-    public void setText3(int age){
-        text3.setText(String.valueOf(age));
-    }
-
-    public void setImage(int resId){
-        imageview.setImageResource(resId);
+    public void setContact_name(String contact_name_) {
+        contact_name.setText(contact_name_);
     }
 
 }

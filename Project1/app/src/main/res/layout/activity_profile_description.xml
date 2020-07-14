@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:paddingHorizontal="10dp"
+    android:paddingTop="10dp"
+    android:background="#FFFFFF"
+    tools:context=".profile_description"
+    android:id="@+id/contact_description_master">
+
+    <TextView android:id="@+id/contact_description_top"
+        android:layout_width="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_height="40dp"/>
+
+    <Button android:id="@+id/button_contacts_back"
+        android:background="@android:color/transparent"
+
+        android:layout_width="wrap_content"
+        android:text="&lt; Contacts"
+        android:fontFamily="@font/calibri_bold"
+        android:textSize="20sp"
+        android:layout_marginLeft="20dp"
+        android:textColor="@color/colorPrimary"
+        android:layout_height="wrap_content"/>
+
+    <Button android:id="@+id/button_change_to_edit_mode"
+        android:layout_width="wrap_content"
+        android:text="+ Edit"
+        android:layout_alignRight="@id/contact_description_top"
+        android:fontFamily="@font/calibri_bold"
+        android:background="@android:color/transparent"
+        android:textSize="20sp"
+        android:layout_marginRight="20dp"
+        android:textColor="@color/colorPrimary"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/contact_description_middle"
+        android:layout_width="match_parent"
+        android:layout_height="170dp"
+        android:layout_below="@id/contact_description_top"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginTop="0dp"
+        android:background="#FFFFFF" />
+
+    <ImageView
+        android:id="@+id/contact_profile_image"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/unknown_profile"
+        android:layout_centerInParent="true"
+        android:scaleType="centerCrop"
+        android:layout_below="@id/contact_description_top" />
+
+    <ImageView
+        android:id="@+id/contact_profile_white_sqaure_with_hole"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/white_square_with_transparent_hole"
+        android:layout_centerInParent="true"
+        android:scaleType="centerCrop"
+        android:layout_below="@id/contact_description_top" />
+
+    <TextView android:id="@+id/contact_full_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:background="#FFFFFF"
+        android:fontFamily="@font/calibri_bold"
+        android:layout_below="@id/contact_profile_image"
+        android:gravity="center"
+        android:textColor="#000000"
+        android:text="full_name"
+        android:textSize="26sp"
+        android:layout_centerInParent="true" />
+
+    <ImageView
+        android:layout_toRightOf="@id/contact_full_name"
+        android:layout_below="@id/contact_profile_image"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="4dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@drawable/star_not"/>
+
+    <TextView android:id="@+id/contact_company"
+        android:layout_width="match_parent"
+        android:background="#FFFFFF"
+        android:layout_below="@id/contact_full_name"
+        android:fontFamily="@font/calibri"
+        android:textColor="#212121"
+        android:layout_marginHorizontal="10dp"
+        android:text="company"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:layout_height="wrap_content"/>
+
+
+    <TextView android:id="@+id/contact_description_bottom"
+        android:layout_width="match_parent"
+        android:layout_below="@id/contact_description_middle"
+        android:layout_centerInParent="true"
+        android:layout_height="match_parent"/>
+
+
+    <LinearLayout
+        android:id="@+id/bottom_contents"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+
+        android:layout_below="@id/contact_company"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_above="@id/bottom_contents"
+            android:layout_marginVertical="6dp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#CDCDCD" />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:text="mobile"
+            android:textColor="#000000"
+            android:textSize="14sp" />
+
+        <TextView android:id="@+id/contact_phone_number"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:textColor="#0000FF"
+            android:fontFamily="@font/montserrat_light"
+            android:textStyle="bold"
+            android:text="+82 10-8506-4538"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginVertical="6dp"
+            android:background="#CDCDCD" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="18dp"
+            android:text="email"
+            android:textColor="#000000"
+            android:textSize="14sp" />
+
+        <TextView android:id="@+id/contact_email_address"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:textColor="#0000FF"
+            android:fontFamily="@font/montserrat_regular"
+            android:text="crorowslowpp@gmail.com"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginVertical="6dp"
+            android:background="#CDCDCD" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="18dp"
+            android:text="homepage"
+            android:textColor="#000000"
+            android:textSize="14sp" />
+
+        <TextView android:id="@+id/contact_homepage"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:textColor="#0000FF"
+            android:fontFamily="@font/montserrat_regular"
+            android:text="https://github.com/auaicn/common_assignment"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginVertical="6dp"
+            android:background="#CDCDCD" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="18dp"
+            android:text="Notes"
+            android:textColor="#000000"
+            android:textSize="14sp" />
+
+        <TextView android:id="@+id/Notes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:textColor="#000000"
+            android:fontFamily="@font/montserrat_regular"
+            android:lineSpacingExtra="2sp"
+            android:text="Notes1\nNotes@gmail.com\nLike Singing\nNever been to Australia"
+            android:textSize="12sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginVertical="6dp"
+            android:background="#CDCDCD" />
+
+        <Button
+            android:id="@+id/contact_toggle_star_button"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:layout_marginTop="6dp"
+            android:background="@android:color/transparent"
+            android:text="+ Star this Caller"
+            android:fontFamily="@font/montserrat_extrabold"
+            android:textColor="#000000"
+            android:textSize="14sp" />
+
+
+
+
+    </LinearLayout>
+
+    \
+
+</RelativeLayout>
