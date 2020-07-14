@@ -20,12 +20,12 @@ import androidx.core.content.ContextCompat;
 
 public class SplashActivity extends Activity {
 
-    int MY_REQUEST_PERMISSIONS = 1234; // 내 임의로 정한 값
     public static final String[] PERMISSIONS = {
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.READ_CONTACTS,
-            Manifest.permission.WRITE_CONTACTS
+            Manifest.permission.WRITE_CONTACTS,
+            Manifest.permission.CALL_PHONE
     };
 
     @Override

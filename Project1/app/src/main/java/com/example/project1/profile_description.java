@@ -7,7 +7,9 @@ import android.graphics.ImageDecoder;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Message;
 import android.provider.ContactsContract;
+import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -39,6 +41,7 @@ public class profile_description extends AppCompatActivity {
 
     private String contact_id;
     private String whether_starred;
+    private Object Message;
 
     public void erase(){
         getContentResolver().delete(
@@ -94,6 +97,10 @@ public class profile_description extends AppCompatActivity {
         // Local variable setting for toggling and resolver operation (ex. Insert, Delete, Update)
         contact_id = parsed_string[8];
         whether_starred = parsed_string[7];
+
+        SmsManager smgr = SmsManager.getDefault();
+        String mobilenumber;
+        smgr.sendDataMessage(mobilenumber,null, Message,null,null);
 
         // Image decoded here.
         ImageDecoder.Source profile_image_source = null;
