@@ -1,7 +1,7 @@
 <h1> Mad Camp Project 1</h1>  
 
 Project Term : 7/8 ~ 7/15   
-TeamMates : zomppang2 & auaicn   
+TeamMates : zzompang2 & auaicn   
 <!-- @mentions auaicn   -->
 
 <h2> Notes </h2>  
@@ -142,7 +142,7 @@ GridView로 돌아가는 Button 과, 해당 `onClickListener` 또한 구현하�
 
 To-do List를 구현하였습니다.  
 1. To-do List item은, 안드로이드에서 기본적으로 제공하는 sqlite.SQLiteDatabase 클래스를 사용하였습니다.  
-2. Liste는 Recycler View를 이용하여 구현하였습니다.  
+2. List는 Recycler View를 이용하여 구현하였습니다.  
 3. Calendar class를 사용하여, 해야할 일을 끝내야 하는 날짜를 정할 수 있도록 구현하였습니다.  
 4. onItemClickListener를 설정하여, to-do List item에 대해, 클릭시 스크롤을 통해 종료 날짜를 수정할 수 있도록 하였습니다.  
 5. 해야할 일을, 현재 날짜에서 가까운 것 우선으로 상단에 배치하였습니다.  
