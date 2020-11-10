@@ -1,11 +1,11 @@
-<h1> Mad Camp Project 1</h1>  
+# Android Application "함박웃음" 
 
 Project Term : 7/8 ~ 7/15   
 TeamMates : zzompang2 & auaicn   
 <!-- @mentions auaicn   -->
 
-<h2> Notes </h2>  
-<h3> 1. Activites & Fragments  </h3>
+## Notes 
+### 1. Activites & Fragments 
   
 Activity 에는,  
 1. 권한 요청을 위한 SplashActivity
@@ -44,9 +44,9 @@ SplashFragment.java:
 <!-- ![Alt text](https://github.com/auaicn/common_assignment/blob/master/images/permission_array.png)  -->
 SplashActivity는 여러 handler 작동이 성공적으로 실행될 경우, MainActivity를 시작하고, 종료됩니다.  
         
-<h2> 1. 첫번째 탭 </h2>  
+## 1. 첫번째 탭 
 
-<h3> Subject : 나의 연락처 구축 </h3>
+### Subject : 나의 연락처 구축 
 
 휴대폰의 'Contacts' 어플리케이션의 contentProvider 에 query를 보내, update, read operation 을 수행하였습니다.  
 query 과정에서, 연락처 content provider API를 통해 얻을 수 있는
